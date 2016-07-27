@@ -3,6 +3,9 @@
  */
 package com.multi.enterprise.poll.core.initializer;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.multi.enterprise.commons.jdbc.config.JdbcConfig;
@@ -48,6 +51,13 @@ public class SpringWebMvcInitializer extends AbstractAnnotationConfigDispatcherS
 	@Override
 	protected String[] getServletMappings() {
 		return new String[] { "/ws" };
+	}
+
+	@Override
+	public void onStartup(final ServletContext context) throws ServletException {
+		context.setInitParameter("webAppRootKey", "poll.core.root");
+		// TODO log configuration
+		super.onStartup(context);
 	}
 
 }
