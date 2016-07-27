@@ -1,4 +1,4 @@
-package com.multi.enterprise.hoboken_exchange;
+package com.multi.enterprise.poll.core;
 
 /**
  * Hello world!
