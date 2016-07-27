@@ -13,9 +13,7 @@ import com.multi.enterprise.commons.servlet.BaseWebMvcConfig;
  *
  */
 @Configuration
-@ComponentScan(basePackages = { "com.multi.enterprise.core.controllers", "com.multi.enterprise.commons.controllers"
-
-})
+@ComponentScan(basePackages = { "com.multi.enterprise.commons.controllers" })
 public class WebMvcConfig extends BaseWebMvcConfig {
 
 }
