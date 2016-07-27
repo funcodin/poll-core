@@ -1,0 +1,1 @@
+Poll core application
