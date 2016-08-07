@@ -28,7 +28,7 @@ public class SpringWebMvcInitializer extends AbstractAnnotationConfigDispatcherS
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 
-		return new Class<?>[] { MainConfig.class };
+		return new Class<?>[] { MainConfig.class, JdbcConfig.class };
 	}
 
 	/*
@@ -40,7 +40,7 @@ public class SpringWebMvcInitializer extends AbstractAnnotationConfigDispatcherS
 	 */
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] { WebMvcConfig.class, JdbcConfig.class };
+		return new Class<?>[] { WebMvcConfig.class };
 	}
 
 	/*
@@ -50,7 +50,7 @@ public class SpringWebMvcInitializer extends AbstractAnnotationConfigDispatcherS
 	 */
 	@Override
 	protected String[] getServletMappings() {
-		return new String[] { "/ws" };
+		return new String[] { "/ws/*" };
 	}
 
 	@Override
