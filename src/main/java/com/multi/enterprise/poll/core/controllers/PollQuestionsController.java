@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.multi.enterprise.commons.controllers.BaseCrudController;
 import com.multi.enterprise.types.poll.Question;
+import com.multi.enterprise.types.poll.consts.PollCoreRestEndpoints;
 
 /**
  * @author Robot
@@ -16,7 +17,7 @@ import com.multi.enterprise.types.poll.Question;
 
 @RestController
 // TODO use poll consts after deploy.
-@RequestMapping(value = "/question")
+@RequestMapping(value = PollCoreRestEndpoints.QUESTION)
 public class PollQuestionsController extends BaseCrudController<Question> {
 
 }
