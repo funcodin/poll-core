@@ -30,7 +30,7 @@ public class QuestionMapper extends BaseRowMapper<Question> {
 		question.setQrCodeUrl(resultSet.getString("qr_code_url"));
 		question.setMediaUrl(resultSet.getString("media_url"));
 		question.setTotalVotes(resultSet.getInt("total_votes"));
-		question.setOpitons(new ArrayList<Options>());
+		question.setOptions(new ArrayList<Options>());
 		return question;
 	}
 
