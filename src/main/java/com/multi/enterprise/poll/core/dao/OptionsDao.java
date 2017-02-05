@@ -6,6 +6,7 @@ package com.multi.enterprise.poll.core.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
@@ -33,6 +34,7 @@ public class OptionsDao extends BaseJdbcRecordAccess<Options> {
 	protected static final String WHERE_CLAUSE = " WHERE id = :id";
 	protected static final String GET_VOTE = "select %s from %s" + WHERE_CLAUSE;
 	protected static final String ADD_VOTE = "update %s SET vote_count= :vote_count" + WHERE_CLAUSE;
+	protected static final String GET_ALL_OPTIONS_BY_QUESTION_ID = "select * from options where question_id = :question_id";
 
 	public Class<Options> getDocumentClass() {
 		return Options.class;
@@ -64,6 +66,13 @@ public class OptionsDao extends BaseJdbcRecordAccess<Options> {
 		this.jdbcTempalte.update(this.updateVoteCountQuery(), this.mapIdandVoteParameter(optionId, voteCount));
 	}
 
+	public List<Options> getAllOptionsByQuestionId(final String questionId) {
+		final List<Options> options = this.jdbcTempalte.query(GET_ALL_OPTIONS_BY_QUESTION_ID,
+				this.mapParams("question_id", questionId), this.rowMapper);
+		return options;
+
+	}
+
 	protected MapSqlParameterSource mapIdandVoteParameter(final String id, final int voteCount) {
 		final Map<String, Object> param = new HashMap<>();
 		param.put("id", id);
@@ -79,4 +88,11 @@ public class OptionsDao extends BaseJdbcRecordAccess<Options> {
 		return new MapSqlParameterSource(param);
 
 	}
+
+	protected MapSqlParameterSource mapParams(final String columnName, final String columnValue) {
+		final Map<String, Object> param = new HashMap<>();
+		param.put(columnName, columnValue);
+		return new MapSqlParameterSource(param);
+	}
+
 }
