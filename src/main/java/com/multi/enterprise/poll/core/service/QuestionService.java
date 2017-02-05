@@ -21,7 +21,7 @@ import com.multi.enterprise.types.poll.Question;
 public class QuestionService extends BaseRecordService<Question> {
 
 	@Autowired
-	QuestionDao qustionDao;
+	QuestionDao questionDao;
 
 	/*
 	 * (non-Javadoc)
