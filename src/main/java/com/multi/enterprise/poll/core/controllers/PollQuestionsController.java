@@ -16,7 +16,6 @@ import com.multi.enterprise.types.poll.consts.PollCoreRestEndpoints;
  */
 
 @RestController
-// TODO use poll consts after deploy.
 @RequestMapping(value = PollCoreRestEndpoints.QUESTION)
 public class PollQuestionsController extends BaseCrudController<Question> {
 
