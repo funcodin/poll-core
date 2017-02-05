@@ -36,6 +36,7 @@ public class QuestionService extends BaseRecordService<Question> {
 	public Question create(final Question question) throws ServiceException {
 		question.setId(UUID.randomUUID().toString());
 		super.create(question);
+
 		return question;
 	}
 
