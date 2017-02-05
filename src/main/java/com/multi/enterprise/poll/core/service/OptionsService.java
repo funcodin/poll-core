@@ -41,8 +41,13 @@ public class OptionsService extends BaseRecordService<Options> {
 	}
 
 	public void addVote(final String optionId) throws ServiceException {
-		final Options option = optionsDao.getById(optionId);
-		// call dao to update count;
+		final int updatedVoteCount = this.getVoteCount(optionId) + 1;
+		this.optionsDao.incrementVote(optionId, updatedVoteCount);
+
+	}
+
+	public int getVoteCount(final String optionId) throws ServiceException {
+		return this.optionsDao.getVoteCount(optionId);
 	}
 
 }
