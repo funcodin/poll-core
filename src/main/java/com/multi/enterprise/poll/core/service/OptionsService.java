@@ -3,8 +3,6 @@
  */
 package com.multi.enterprise.poll.core.service;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +31,6 @@ public class OptionsService extends BaseRecordService<Options> {
 		return Options.class;
 	}
 
-	@Override
-	public Options create(final Options options) throws ServiceException {
-		options.setId(UUID.randomUUID().toString());
-		super.create(options);
-		return options;
-	}
-
 	public void addVote(final String optionId) throws ServiceException {
 		final int updatedVoteCount = this.getVoteCount(optionId) + 1;
 		this.optionsDao.incrementVote(optionId, updatedVoteCount);
@@ -48,6 +39,29 @@ public class OptionsService extends BaseRecordService<Options> {
 
 	public int getVoteCount(final String optionId) throws ServiceException {
 		return this.optionsDao.getVoteCount(optionId);
+	}
+
+	/*
+	 * We should not allow to create update or delete options directly. These options should always be performed from
+	 * questions service.
+	 */
+
+	@Override
+	public Options update(Options options) throws ServiceException {
+		throw new ServiceException(String.format("Operation not permitted. Cannot delete options with id %s ",
+				options.getId()));
+
+	}
+
+	@Override
+	public void delete(String id) throws ServiceException {
+		throw new ServiceException(String.format("Operation not permitted. Cannot delete options with id %s ", id));
+	}
+
+	@Override
+	public Options create(final Options options) throws ServiceException {
+		throw new ServiceException(String.format("Operation not permitted. Cannot delete options with id %s ",
+				options.getId()));
 	}
 
 }
