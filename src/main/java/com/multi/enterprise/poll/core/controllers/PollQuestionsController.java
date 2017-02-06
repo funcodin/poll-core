@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.multi.enterprise.commons.controllers.CrudController;
 import com.multi.enterprise.poll.core.controllers.converters.QuestionConverter;
+import com.multi.enterprise.poll.core.controllers.converters.QuestionListConverter;
 import com.multi.enterprise.poll.core.service.QuestionService;
 import com.multi.enterprise.types.exception.ServiceException;
 import com.multi.enterprise.types.poll.Question;
 import com.multi.enterprise.types.poll.QuestionDTO;
+import com.multi.enterprise.types.poll.QuestionList;
+import com.multi.enterprise.types.poll.QuestionListDTO;
 import com.multi.enterprise.types.poll.consts.PollCoreRestEndpoints;
 
 /**
@@ -29,6 +32,9 @@ public class PollQuestionsController implements CrudController<QuestionDTO> {
 
 	@Autowired
 	QuestionConverter converter;
+
+	@Autowired
+	QuestionListConverter questionListConverter;
 
 	@Autowired
 	QuestionService questionService;
@@ -80,6 +86,13 @@ public class PollQuestionsController implements CrudController<QuestionDTO> {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void delete(String id) throws ServiceException {
 		this.questionService.delete(id);
+	}
+
+	@RequestMapping(value = "getPaginatedQuestion/{lastQuestionIndex}/limit/{limit}", method = RequestMethod.GET)
+	public QuestionListDTO getQuestions(@PathVariable final int lastQuestionIndex, @PathVariable final int limit)
+			throws ServiceException {
+		final QuestionList questionList = this.questionService.getPaginatedQuestion(lastQuestionIndex, limit);
+		return this.questionListConverter.externalize(questionList);
 	}
 
 }

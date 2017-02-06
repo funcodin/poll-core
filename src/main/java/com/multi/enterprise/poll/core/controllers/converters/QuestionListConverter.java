@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.multi.enterprise.types.poll.Question;
 import com.multi.enterprise.types.poll.QuestionDTO;
+import com.multi.enterprise.types.poll.QuestionList;
 import com.multi.enterprise.types.poll.QuestionListDTO;
 
 /**
@@ -19,7 +20,7 @@ import com.multi.enterprise.types.poll.QuestionListDTO;
  */
 
 @Component
-public class QuestionListConverter implements Converter<List<Question>, QuestionListDTO> {
+public class QuestionListConverter implements Converter<QuestionList, QuestionListDTO> {
 
 	@Autowired
 	QuestionConverter questionConverter;
@@ -30,7 +31,7 @@ public class QuestionListConverter implements Converter<List<Question>, Question
 	 * @see com.multi.enterprise.poll.core.controllers.converters.Converter#internalize(java.lang.Object)
 	 */
 	@Override
-	public List<Question> internalize(QuestionListDTO entity) {
+	public QuestionList internalize(final QuestionListDTO entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -41,12 +42,16 @@ public class QuestionListConverter implements Converter<List<Question>, Question
 	 * @see com.multi.enterprise.poll.core.controllers.converters.Converter#externalize(java.lang.Object)
 	 */
 	@Override
-	public QuestionListDTO externalize(List<Question> questionList) {
+	public QuestionListDTO externalize(final QuestionList questionList) {
 
 		final QuestionListDTO questionListDto = new QuestionListDTO();
-		List<QuestionDTO> questionDtoList = new ArrayList<>();
+		final List<QuestionDTO> questionDtoList = new ArrayList<>();
 
-		for (final Question question : questionList) {
+		questionListDto.setLastPage(questionList.isLastPage());
+		questionListDto.setLastQuestionIndex(questionList.getLastQuestionIndex());
+		questionListDto.setLimit(questionList.getLimit());
+
+		for (final Question question : questionList.getQuestions()) {
 			questionDtoList.add(this.questionConverter.externalize(question));
 		}
 
