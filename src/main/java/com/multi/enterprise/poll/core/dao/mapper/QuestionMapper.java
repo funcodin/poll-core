@@ -30,7 +30,6 @@ public class QuestionMapper extends BaseRowMapper<Question> {
 		question.setOptionType(resultSet.getString("option_type"));
 		question.setQrCodeUrl(resultSet.getString("qr_code_url"));
 		question.setMediaUrl(resultSet.getString("media_url"));
-		question.setTotalVotes(resultSet.getInt("total_votes"));
 		question.setCreatedDate(resultSet.getDate("created_date"));
 		question.setModifiedDate(resultSet.getDate("modified_date"));
 		question.setOptions(new ArrayList<Options>());

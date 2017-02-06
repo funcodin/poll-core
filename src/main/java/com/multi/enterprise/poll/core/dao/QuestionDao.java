@@ -19,7 +19,7 @@ import com.multi.enterprise.types.poll.QuestionList;
 @Repository
 public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 
-	private String SELECT_PAGINATED_QUESTION = "select * from question where id > %d order by id limit %d";
+	private String SELECT_PAGINATED_QUESTION = "select * from question where question_index > %d order by question_index limit %d";
 
 	/*
 	 * (non-Javadoc)
@@ -31,14 +31,14 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 	}
 
 	public QuestionList getPaginatedQuestion(final int questionIndex, final int limit) {
-
-		final List<Question> questions = this.jdbcTempalte.query(SELECT_PAGINATED_QUESTION, this.rowMapper);
-		// TODO update this to compare against index
-		final Comparator<Question> comparator = (q1, q2) -> Integer.compare(q1.getTotalVotes(), q2.getTotalVotes());
+		final String query = String.format(SELECT_PAGINATED_QUESTION, questionIndex, limit);
+		final List<Question> questions = this.jdbcTempalte.query(query, this.rowMapper);
+		final Comparator<Question> comparator = (q1, q2) -> Integer.compare(q1.getQuestionIndex(),
+				q2.getQuestionIndex());
 		final Question question = questions.stream().max(comparator).get();
 		final QuestionList questionList = new QuestionList();
 
-		questionList.setLastQuestionIndex(question.getTotalVotes());
+		questionList.setLastQuestionIndex(question.getQuestionIndex());
 		questionList.setLimit(limit);
 
 		if (limit > questions.size()) {
@@ -49,5 +49,4 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 		return questionList;
 
 	}
-
 }

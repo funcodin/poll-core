@@ -45,7 +45,6 @@ public class QuestionSqlParameterMapper extends BaseSqlParameterMapper<Question>
 		orderedMapSqlParameterSource.addValue("option_type", question.getOptionType());
 		orderedMapSqlParameterSource.addValue("qr_code_url", question.getQrCodeUrl());
 		orderedMapSqlParameterSource.addValue("media_url", question.getMediaUrl());
-		orderedMapSqlParameterSource.addValue("total_votes", question.getTotalVotes());
 		orderedMapSqlParameterSource.addValue("created_date", new Date());
 		orderedMapSqlParameterSource.addValue("modified_date", new Date());
 

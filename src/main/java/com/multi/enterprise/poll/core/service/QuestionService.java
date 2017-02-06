@@ -17,6 +17,7 @@ import com.multi.enterprise.types.exception.EntityNotFoundException;
 import com.multi.enterprise.types.exception.ServiceException;
 import com.multi.enterprise.types.poll.Options;
 import com.multi.enterprise.types.poll.Question;
+import com.multi.enterprise.types.poll.QuestionList;
 
 /**
  * @author Robot
@@ -44,7 +45,6 @@ public class QuestionService extends BaseRecordService<Question> {
 	public Question getById(final String id) throws ServiceException {
 		final Question question = this.questionDao.getById(id);
 		final List<Options> options = this.optionsDao.getAllOptionsByQuestionId(id);
-		// Set total votes here no need to store in DB
 		question.setTotalVotes(options.stream().mapToInt(option -> option.getVoteCount()).sum());
 		question.setOptions(options);
 		return question;
@@ -76,4 +76,16 @@ public class QuestionService extends BaseRecordService<Question> {
 		}
 		this.questionDao.delete(question);
 	}
+
+	public QuestionList getPaginatedQuestion(final int lastQuestionIndex, final int limit) {
+		final QuestionList questionList = this.questionDao.getPaginatedQuestion(lastQuestionIndex, limit);
+
+		for (Question question : questionList.getQuestions()) {
+			final List<Options> options = this.optionsDao.getAllOptionsByQuestionId(question.getId());
+			question.setTotalVotes(options.stream().mapToInt(option -> option.getVoteCount()).sum());
+			question.setOptions(options);
+		}
+		return questionList;
+	}
+
 }
