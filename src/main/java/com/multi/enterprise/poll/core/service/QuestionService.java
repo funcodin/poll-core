@@ -5,7 +5,6 @@ package com.multi.enterprise.poll.core.service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,10 +41,10 @@ public class QuestionService extends BaseRecordService<Question> {
 	}
 
 	@Override
-	public Question getById(String id) throws ServiceException {
+	public Question getById(final String id) throws ServiceException {
 		final Question question = this.questionDao.getById(id);
 		final List<Options> options = this.optionsDao.getAllOptionsByQuestionId(id);
-		// Set total votes no need to store in DB
+		// Set total votes here no need to store in DB
 		question.setTotalVotes(options.stream().mapToInt(option -> option.getVoteCount()).sum());
 		question.setOptions(options);
 		return question;
@@ -54,16 +53,10 @@ public class QuestionService extends BaseRecordService<Question> {
 	@Override
 	public Question create(final Question question) throws ServiceException {
 		QuestionValidation.isValidQuestion(question);
-
-		question.setId(UUID.randomUUID().toString());
 		question.setTotalVotes(0);
-		question.setOptionType(question.getOptionType().toUpperCase());
 		super.create(question);
 
 		for (final Options options : question.getOptions()) {
-			options.setId(UUID.randomUUID().toString());
-			options.setQuestionId(question.getId());
-			options.setOptionType(options.getOptionType().toUpperCase());
 			options.setVoteCount(0);
 			optionsDao.create(options);
 		}
