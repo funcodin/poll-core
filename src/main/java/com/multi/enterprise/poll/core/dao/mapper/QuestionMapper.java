@@ -23,6 +23,7 @@ public class QuestionMapper extends BaseRowMapper<Question> {
 	@Override
 	public Question mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
 		final Question question = new Question();
+		question.setQuestionIndex(resultSet.getInt("question_index"));
 		question.setId(resultSet.getString("id"));
 		question.setUserId(resultSet.getString("userId"));
 		question.setQuestion(resultSet.getString("question"));
