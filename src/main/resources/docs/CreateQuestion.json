@@ -1,0 +1,44 @@
+Create Question
+
+
+Request  http://localhost:8080/ws/question
+POST
+
+{  
+   "pollQuestion":"This is a test json quest",
+   "optionType":"BINARY",
+   "options":[  
+      {  
+         "optionValue":"BINARY"
+         
+      },
+      {  
+         "optionValue":"BINARY"
+       }
+   ]
+}
+
+
+Response
+
+{
+  "questionId": "858309d1-2c93-4843-adee-b448a1c0d232",
+  "pollQuestion": "This is a test json quest",
+  "optionType": "BINARY",
+  "totalVotes": 0,
+  "options": [
+    {
+      "optionId": "c429e1be-c457-4089-9d5e-79e870d58882",
+      "optionValue": "BINARY",
+      "voteCount": 0
+    },
+    {
+      "optionId": "0334aae1-a4c0-4383-9352-51e7ab563482",
+      "optionValue": "BINARY",
+      "voteCount": 0
+    }
+  ],
+  "userId": null,
+  "qrCodeUrl": null,
+  "mediaUrl": null
+}
