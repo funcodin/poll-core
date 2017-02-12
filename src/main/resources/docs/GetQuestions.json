@@ -1,0 +1,57 @@
+
+http://localhost:8080/ws/question/getPaginatedQuestion/{lastPaginatedQuestionId}/limit/{LimitValue}
+FYI you will have to keep track of lastPaginatedQuestionId. LimitValue is the number for results you want back
+
+Request http://localhost:8080/ws/question/getPaginatedQuestion/3/limit/2
+
+Response 
+
+{
+  "lastQuestionIndex": 5,
+  "limit": 2,
+  "isLastPage": false,
+  "questions": [
+    {
+      "questionId": "732e3b75-86da-46a2-9315-188e576e7097",
+      "pollQuestion": "First DTO test question",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "1023c219-2b54-4bf2-82a1-3ea2a06ca35d",
+          "optionValue": "No",
+          "voteCount": 0
+        },
+        {
+          "optionId": "41cb8ceb-8340-4b3b-bbbf-9942dac1666d",
+          "optionValue": "Yes",
+          "voteCount": 0
+        }
+      ],
+      "userId": null,
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "60b57e2e-d61f-44ef-8bbf-d91a0c04f750",
+      "pollQuestion": "First DTO test question",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "02d69730-42da-4d9e-a111-e7bf6a1447f1",
+          "optionValue": "Yes",
+          "voteCount": 0
+        },
+        {
+          "optionId": "57e51eb6-f762-4412-ba9e-2be39b476e62",
+          "optionValue": "No",
+          "voteCount": 0
+        }
+      ],
+      "userId": null,
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    }
+  ]
+}
