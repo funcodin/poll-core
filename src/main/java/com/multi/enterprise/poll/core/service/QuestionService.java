@@ -88,4 +88,15 @@ public class QuestionService extends BaseRecordService<Question> {
 		return questionList;
 	}
 
+	public QuestionList getLatestPaginatedQuestion(final int limit) {
+		final QuestionList questionList = this.questionDao.getLatestPaginatedQuestion(limit);
+
+		for (Question question : questionList.getQuestions()) {
+			final List<Options> options = this.optionsDao.getAllOptionsByQuestionId(question.getId());
+			question.setTotalVotes(options.stream().mapToInt(option -> option.getVoteCount()).sum());
+			question.setOptions(options);
+		}
+		return questionList;
+	}
+
 }

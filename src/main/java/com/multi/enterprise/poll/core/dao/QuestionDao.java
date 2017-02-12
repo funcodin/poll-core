@@ -21,7 +21,7 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 
 	private String SELECT_PAGINATED_QUESTION = "select * from question where question_index > %d order by question_index limit %d";
 
-	private String SELECT_LATEST_PAGINATED_QUESTION = "SELECT * FROM question WHERE question_index > (SELECT MAX(question_index) - %d FROM question) order by question_index";
+	private String SELECT_LATEST_PAGINATED_QUESTION = "SELECT * FROM question WHERE question_index > (SELECT MAX(question_index) - %d FROM question)";
 
 	/*
 	 * (non-Javadoc)
@@ -53,7 +53,7 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 	}
 
 	public QuestionList getLatestPaginatedQuestion(final int limit) {
-		final String query = String.format(SELECT_PAGINATED_QUESTION, limit);
+		final String query = String.format(SELECT_LATEST_PAGINATED_QUESTION, limit);
 		final List<Question> questions = this.jdbcTempalte.query(query, this.rowMapper);
 		final Comparator<Question> comparator = (q1, q2) -> Integer.compare(q1.getQuestionIndex(),
 				q2.getQuestionIndex());
