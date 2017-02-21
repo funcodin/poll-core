@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.multi.enterprise.commons.controllers.CrudController;
+import com.multi.enterprise.poll.core.controllers.converters.QuestionListConverter;
 import com.multi.enterprise.poll.core.controllers.converters.UserConverter;
 import com.multi.enterprise.poll.core.service.UserService;
 import com.multi.enterprise.types.exception.ClientException;
 import com.multi.enterprise.types.exception.ServiceException;
+import com.multi.enterprise.types.poll.QuestionListDTO;
 import com.multi.enterprise.types.poll.accounts.User;
 import com.multi.enterprise.types.poll.consts.PollCoreRestEndpoints;
 import com.multi.enterprise.types.users.UserDTO;
@@ -33,6 +35,9 @@ public class UserController implements CrudController<UserDTO> {
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	QuestionListConverter questionListConverter;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -47,10 +52,9 @@ public class UserController implements CrudController<UserDTO> {
 	}
 
 	@RequestMapping(value = "/validate", method = RequestMethod.POST)
-	public UserDTO validateUser(@RequestBody final UserDTO userDto) throws ServiceException, ClientException {
+	public QuestionListDTO validateUser(@RequestBody final UserDTO userDto) throws ServiceException, ClientException {
 		final User user = this.converter.internalizeValidate(userDto);
-		final User createUser = this.userService.validate(user);
-		return this.converter.externalize(createUser);
+		return this.questionListConverter.externalize(this.userService.validate(user));
 	}
 
 	/*

@@ -3,17 +3,24 @@
  */
 package com.multi.enterprise.poll.core.service;
 
+import java.util.List;
+
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.multi.enterprise.commons.service.BaseRecordService;
+import com.multi.enterprise.poll.core.dao.OptionsDao;
 import com.multi.enterprise.poll.core.dao.PersonalDetailDao;
+import com.multi.enterprise.poll.core.dao.QuestionDao;
 import com.multi.enterprise.poll.core.dao.SecureUserDao;
 import com.multi.enterprise.poll.core.dao.UserDao;
 import com.multi.enterprise.poll.core.dao.UserDetailDao;
 import com.multi.enterprise.types.exception.ClientException;
 import com.multi.enterprise.types.exception.ServiceException;
+import com.multi.enterprise.types.poll.Options;
+import com.multi.enterprise.types.poll.Question;
+import com.multi.enterprise.types.poll.QuestionList;
 import com.multi.enterprise.types.poll.accounts.SecureUser;
 import com.multi.enterprise.types.poll.accounts.User;
 import com.multi.enterprise.types.poll.accounts.UserDetails;
@@ -45,6 +52,12 @@ public class UserService extends BaseRecordService<User> {
 	@Autowired
 	UserDetailDao userDetailDao;
 
+	@Autowired
+	QuestionDao questionDao;
+
+	@Autowired
+	OptionsDao optionsDao;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -74,7 +87,7 @@ public class UserService extends BaseRecordService<User> {
 		return user;
 	}
 
-	public User validate(final User user) throws ServiceException, ClientException {
+	public QuestionList validate(final User user) throws ServiceException, ClientException {
 		// find user by username
 		final User foundUser = this.userDao.getByUserName(user.getUserName());
 		// find secure user
@@ -92,6 +105,14 @@ public class UserService extends BaseRecordService<User> {
 		if (!StringUtils.equals(foundUser.getPassword(), passwordHash)) {
 			throw new ClientException("Invalid credentials ");
 		}
-		return foundUser;
+
+		final QuestionList questionList = this.questionDao.getLatestPaginatedQuestion(5);
+
+		for (Question question : questionList.getQuestions()) {
+			final List<Options> options = this.optionsDao.getAllOptionsByQuestionId(question.getId());
+			question.setTotalVotes(options.stream().mapToInt(option -> option.getVoteCount()).sum());
+			question.setOptions(options);
+		}
+		return questionList;
 	}
 }
