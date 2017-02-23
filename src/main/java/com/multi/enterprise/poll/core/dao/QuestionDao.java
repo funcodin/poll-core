@@ -57,7 +57,7 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 		final List<Question> questions = this.jdbcTempalte.query(query, this.rowMapper);
 		final Comparator<Question> comparator = (q1, q2) -> Integer.compare(q1.getQuestionIndex(),
 				q2.getQuestionIndex());
-		final Question question = questions.stream().max(comparator).get();
+		final Question question = questions.stream().min(comparator).get();
 		final QuestionList questionList = new QuestionList();
 
 		questionList.setLastQuestionIndex(question.getQuestionIndex());
