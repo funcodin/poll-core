@@ -19,7 +19,7 @@ import com.multi.enterprise.types.poll.QuestionList;
 @Repository
 public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 
-	private String SELECT_PAGINATED_QUESTION = "select * from question where question_index > %d order by question_index limit %d";
+	private String SELECT_PAGINATED_QUESTION = "select * from question where question_index < %d order by question_index desc limit %d";
 
 	private String SELECT_LATEST_PAGINATED_QUESTION = "SELECT * FROM question order by question_index desc limit %d";
 
