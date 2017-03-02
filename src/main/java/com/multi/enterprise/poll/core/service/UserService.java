@@ -75,10 +75,14 @@ public class UserService extends BaseRecordService<User> {
 		final String passwordHash = this.hashingService.getSecuredString(user.getPassword(), secureUser.getSalt());
 		final String encryptedEmail = this.encryptionService.encrypt(user.getPersonalDetails().getEmailAddress(),
 				secureUser.getSalt());
-		final String encryptedContact = this.encryptionService.encrypt(user.getPersonalDetails().getContactNumber(),
-				secureUser.getSalt());
 		user.getPersonalDetails().setEmailAddress(encryptedEmail);
-		user.getPersonalDetails().setContactNumber(encryptedContact);
+
+		if (StringUtils.isNotEmpty(user.getPersonalDetails().getContactNumber())) {
+			final String encryptedContact = this.encryptionService.encrypt(
+					user.getPersonalDetails().getContactNumber(), secureUser.getSalt());
+			user.getPersonalDetails().setContactNumber(encryptedContact);
+		}
+
 		user.setPassword(passwordHash);
 		this.userDao.create(user);
 		this.userDetailDao.create(user.getUserDetails());
