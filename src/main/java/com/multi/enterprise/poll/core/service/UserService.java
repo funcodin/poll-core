@@ -23,8 +23,6 @@ import com.multi.enterprise.types.poll.Question;
 import com.multi.enterprise.types.poll.QuestionList;
 import com.multi.enterprise.types.poll.accounts.SecureUser;
 import com.multi.enterprise.types.poll.accounts.User;
-import com.multi.enterprise.types.poll.accounts.UserDetails;
-import com.multi.enterprise.types.poll.accounts.UserPersonalDetails;
 
 /**
  * @author Robot
@@ -97,11 +95,11 @@ public class UserService extends BaseRecordService<User> {
 		// find secure user
 
 		final SecureUser secureUser = this.secureUserDao.getByUserId(foundUser.getUserId());
-		final UserPersonalDetails personalDetails = this.personalDetailDao.getByUserId(foundUser.getUserId());
-		final UserDetails userDetails = this.userDetailDao.getByUserId(foundUser.getUserId());
+		// final UserPersonalDetails personalDetails = this.personalDetailDao.getByUserId(foundUser.getUserId());
+		// final UserDetails userDetails = this.userDetailDao.getByUserId(foundUser.getUserId());
 
-		foundUser.setPersonalDetails(personalDetails);
-		foundUser.setUserDetails(userDetails);
+		// foundUser.setPersonalDetails(personalDetails);
+		// foundUser.setUserDetails(userDetails);
 
 		final String passwordHash = this.hashingService.getSecuredString(user.getPassword(), secureUser.getSalt());
 		foundUser.setPassword(passwordHash);
