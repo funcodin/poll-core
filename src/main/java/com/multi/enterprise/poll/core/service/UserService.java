@@ -97,7 +97,6 @@ public class UserService extends BaseRecordService<User> {
 		final SecureUser secureUser = this.secureUserDao.getByUserId(foundUser.getUserId());
 		// final UserPersonalDetails personalDetails = this.personalDetailDao.getByUserId(foundUser.getUserId());
 		// final UserDetails userDetails = this.userDetailDao.getByUserId(foundUser.getUserId());
-
 		// foundUser.setPersonalDetails(personalDetails);
 		// foundUser.setUserDetails(userDetails);
 
