@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.multi.enterprise.commons.controllers.CrudController;
+import com.multi.enterprise.poll.core.controllers.converters.FriendListConverter;
 import com.multi.enterprise.poll.core.controllers.converters.FriendRequestConverter;
 import com.multi.enterprise.poll.core.service.FriendRequestService;
 import com.multi.enterprise.types.exception.ServiceException;
 import com.multi.enterprise.types.friends.FriendRequest;
 import com.multi.enterprise.types.friends.FriendRequestDTO;
+import com.multi.enterprise.types.friends.FriendsDTO;
 import com.multi.enterprise.types.poll.consts.PollCoreRestEndpoints;
 
 /**
@@ -32,6 +34,9 @@ public class FriendRequestController implements CrudController<FriendRequestDTO>
 	@Autowired
 	FriendRequestService service;
 
+	@Autowired
+	FriendListConverter friendListConverter;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -45,11 +50,19 @@ public class FriendRequestController implements CrudController<FriendRequestDTO>
 		return this.converter.externalize(createdFR);
 	}
 
+	@RequestMapping(value = "/accept", method = RequestMethod.POST)
+	public FriendsDTO acceptRequest(@RequestBody final FriendRequestDTO friendRequestDto) throws ServiceException {
+		final FriendRequest friendRequest = this.converter.internalize(friendRequestDto);
+		return this.friendListConverter.externalize(this.service.acceptFriendRequest(friendRequest));
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.multi.enterprise.commons.controllers.CrudController#getById(java.lang.String)
 	 */
+
 	@Override
 	public FriendRequestDTO getById(String id) throws ServiceException {
 		throw new ServiceException("Operation not supported");
