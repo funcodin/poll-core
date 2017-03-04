@@ -43,7 +43,7 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 		questionList.setLastQuestionIndex(question.getQuestionIndex());
 		questionList.setLimit(limit);
 
-		if (limit > questions.size()) {
+		if (limit >= questions.size()) {
 			questionList.setLastPage(true);
 		}
 		questionList.setQuestions(questions);
