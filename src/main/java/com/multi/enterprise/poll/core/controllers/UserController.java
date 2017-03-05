@@ -65,7 +65,13 @@ public class UserController implements CrudController<UserDTO> {
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public UserDTO getById(@PathVariable final String id) throws ServiceException {
-		final User user = this.userService.getById(id);
+		final User user = this.userService.getUserById(id);
+		return this.converter.externalize(user);
+	}
+
+	@RequestMapping(value = "/userName/{userName}", method = RequestMethod.GET)
+	public UserDTO getByUserName(@PathVariable final String userName) throws ServiceException {
+		final User user = this.userService.getByUserName(userName);
 		return this.converter.externalize(user);
 	}
 

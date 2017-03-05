@@ -69,7 +69,7 @@ public class UserService extends BaseRecordService<User> {
 	@Override
 	public User create(final User user) throws ServiceException {
 		final SecureUser secureUser = this.hashingService.createSecureUser(user);
-		this.secureUserDao.create(secureUser);
+
 		final String passwordHash = this.hashingService.getSecuredString(user.getPassword(), secureUser.getSalt());
 		final String encryptedEmail = this.encryptionService.encrypt(user.getPersonalDetails().getEmailAddress(),
 				secureUser.getSalt());
@@ -83,8 +83,45 @@ public class UserService extends BaseRecordService<User> {
 
 		user.setPassword(passwordHash);
 		this.userDao.create(user);
+		this.secureUserDao.create(secureUser);
 		this.userDetailDao.create(user.getUserDetails());
 		this.personalDetailDao.create(user.getPersonalDetails());
+
+		return user;
+	}
+
+	public User getUserById(final String userId) throws ServiceException {
+		final User user = this.userDao.getByUserId(userId);
+		final SecureUser secureUser = this.secureUserDao.getByUserId(user.getUserId());
+
+		if (StringUtils.isNotEmpty(user.getPersonalDetails().getEmailAddress())) {
+			user.getPersonalDetails().setEmailAddress(
+					this.encryptionService.decrypt(user.getPersonalDetails().getEmailAddress(), secureUser.getSalt()));
+
+		}
+
+		if (StringUtils.isNotEmpty(user.getPersonalDetails().getContactNumber())) {
+			user.getPersonalDetails().setContactNumber(
+					this.encryptionService.decrypt(user.getPersonalDetails().getContactNumber(), secureUser.getSalt()));
+		}
+
+		return user;
+	}
+
+	public User getByUserName(final String userName) throws ServiceException {
+		final User user = this.userDao.getByUserName(userName);
+		final SecureUser secureUser = this.secureUserDao.getByUserId(user.getUserId());
+
+		if (StringUtils.isNotEmpty(user.getPersonalDetails().getEmailAddress())) {
+			user.getPersonalDetails().setEmailAddress(
+					this.encryptionService.decrypt(user.getPersonalDetails().getEmailAddress(), secureUser.getSalt()));
+
+		}
+
+		if (StringUtils.isNotEmpty(user.getPersonalDetails().getContactNumber())) {
+			user.getPersonalDetails().setContactNumber(
+					this.encryptionService.decrypt(user.getPersonalDetails().getContactNumber(), secureUser.getSalt()));
+		}
 
 		return user;
 	}
@@ -95,11 +132,6 @@ public class UserService extends BaseRecordService<User> {
 		// find secure user
 
 		final SecureUser secureUser = this.secureUserDao.getByUserId(foundUser.getUserId());
-		// final UserPersonalDetails personalDetails = this.personalDetailDao.getByUserId(foundUser.getUserId());
-		// final UserDetails userDetails = this.userDetailDao.getByUserId(foundUser.getUserId());
-		// foundUser.setPersonalDetails(personalDetails);
-		// foundUser.setUserDetails(userDetails);
-
 		final String passwordHash = this.hashingService.getSecuredString(user.getPassword(), secureUser.getSalt());
 		foundUser.setPassword(passwordHash);
 

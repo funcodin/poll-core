@@ -22,7 +22,15 @@ import com.multi.enterprise.types.poll.accounts.User;
 @Repository
 public class UserDao extends BaseJdbcRecordAccess<User> {
 
-	private String SELECT_BY_USER_NAME = "select * from user where user_name = :user_name";
+	private String SELECT_BY_USER_NAME = "select a.id, a.user_name, a.password, a.created_date, a.modified_date, b.age_group, b.gender, c.full_name, c.email, c.contact "
+			+ " from user a"
+			+ " inner join user_details b on a.id = b.user_id"
+			+ " inner join user_personal_info c on a.id = c.user_id" + " where a.user_name = :user_name";
+
+	private String SELECT_BY_USERID = "select a.id, a.user_name, a.password, a.created_date, a.modified_date, b.age_group, b.gender, c.full_name, c.email, c.contact"
+			+ " from user a"
+			+ " inner join user_details b on a.id = b.user_id"
+			+ " inner join user_personal_info c on a.id = c.user_id" + " where a.id = :id";
 
 	/*
 	 * (non-Javadoc)
@@ -39,6 +47,12 @@ public class UserDao extends BaseJdbcRecordAccess<User> {
 				this.rowMapper);
 		return CollectionUtils.isEmpty(users) ? null : users.get(0);
 
+	}
+
+	public User getByUserId(final String userId) {
+		final List<User> users = this.jdbcTempalte
+				.query(SELECT_BY_USERID, this.mapParams("id", userId), this.rowMapper);
+		return CollectionUtils.isEmpty(users) ? null : users.get(0);
 	}
 
 	protected MapSqlParameterSource mapParams(final String columnName, final String columnValue) {

@@ -3,6 +3,7 @@
  */
 package com.multi.enterprise.poll.core.controllers.converters;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
@@ -71,7 +72,18 @@ public class UserConverter implements Converter<User, UserDTO> {
 		final UserDTO userDto = new UserDTO();
 		userDto.setUserId(user.getId());
 		userDto.setUsername(user.getUserName());
-		userDto.setPassword(user.getPassword());
+		userDto.setPassword("");
+
+		final UserPersonalDetails personalDetails = user.getPersonalDetails();
+
+		userDto.setFullName(personalDetails.getFullName());
+		userDto.setContactNumber(personalDetails.getContactNumber());
+		userDto.setEmail(personalDetails.getEmailAddress());
+
+		final UserDetails userDetails = user.getUserDetails();
+		userDto.setAgeGroup(Objects.nonNull(userDetails.getAgeGroup()) ? userDetails.getAgeGroup().name() : null);
+		userDto.setGender(Objects.nonNull(userDetails.getGender()) ? userDetails.getGender().name() : null);
+
 		return userDto;
 	}
 
