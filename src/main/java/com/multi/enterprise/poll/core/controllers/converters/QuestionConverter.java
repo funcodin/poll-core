@@ -5,12 +5,14 @@ package com.multi.enterprise.poll.core.controllers.converters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.multi.enterprise.types.exception.ServiceException;
 import com.multi.enterprise.types.poll.OptionDTO;
 import com.multi.enterprise.types.poll.Options;
 import com.multi.enterprise.types.poll.Question;
@@ -34,10 +36,12 @@ public class QuestionConverter implements Converter<Question, QuestionDTO> {
 	OptionsConverter optionsConverter;
 
 	@Override
-	public Question internalize(final QuestionDTO questionDto) {
+	public Question internalize(final QuestionDTO questionDto) throws ServiceException {
 		final Question question = new Question();
 		final List<Options> optionList = new ArrayList<>();
-
+		if (Objects.isNull(questionDto.getUserId())) {
+			throw new ServiceException("User Id is required ");
+		}
 		question.setId(StringUtils.isEmpty(questionDto.getQuestionId()) ? UUID.randomUUID().toString() : questionDto
 				.getQuestionId());
 		question.setQuestion(questionDto.getPollQuestion());
