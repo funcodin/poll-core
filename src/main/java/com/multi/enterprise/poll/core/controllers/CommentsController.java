@@ -17,6 +17,8 @@ import com.multi.enterprise.poll.core.service.CommentService;
 import com.multi.enterprise.types.exception.ServiceException;
 import com.multi.enterprise.types.poll.Comment;
 import com.multi.enterprise.types.poll.CommentDTO;
+import com.multi.enterprise.types.poll.CommentList;
+import com.multi.enterprise.types.poll.CommentListDTO;
 import com.multi.enterprise.types.poll.consts.PollCoreRestEndpoints;
 
 /**
@@ -66,7 +68,8 @@ public class CommentsController implements CrudController<CommentDTO> {
 	 * @see com.multi.enterprise.commons.controllers.CrudController#update(java.lang.Object)
 	 */
 	@Override
-	public CommentDTO update(CommentDTO update) throws ServiceException {
+	@RequestMapping(value = "", method = RequestMethod.PUT)
+	public CommentDTO update(@RequestBody CommentDTO update) throws ServiceException {
 		final Comment comment = this.commentConverter.internalize(update);
 		final Comment updateComment = this.commentService.update(comment);
 		return this.commentConverter.externalize(updateComment);
@@ -81,6 +84,20 @@ public class CommentsController implements CrudController<CommentDTO> {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable String id) throws ServiceException {
 		this.commentService.delete(id);
+	}
+
+	@RequestMapping(value = "getPaginatedComments/questionId/{questionId}/{lastIndex}/{limit}", method = RequestMethod.GET)
+	public CommentListDTO getCommentsByQuestionId(@PathVariable final String questionId,
+			@PathVariable final int lastIndex, @PathVariable final int limit) {
+		CommentList commentList = this.commentService.getPaginatedCommentsForQuestion(questionId, lastIndex, limit);
+		return this.commentListConverter.externalize(commentList);
+	}
+
+	@RequestMapping(value = "getPaginatedComments/userId/{userId}/{lastIndex}/{limit}", method = RequestMethod.GET)
+	public CommentListDTO getCommentsByUserId(@PathVariable final String userId, @PathVariable final int lastIndex,
+			@PathVariable final int limit) {
+		CommentList commentList = this.commentService.getPaginatedCommentsByUserId(userId, lastIndex, limit);
+		return this.commentListConverter.externalize(commentList);
 	}
 
 }

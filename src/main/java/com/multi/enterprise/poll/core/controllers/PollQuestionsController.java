@@ -71,7 +71,7 @@ public class PollQuestionsController implements CrudController<QuestionDTO> {
 	 */
 	@Override
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-	public QuestionDTO update(QuestionDTO questionDto) throws ServiceException {
+	public QuestionDTO update(@RequestBody QuestionDTO questionDto) throws ServiceException {
 		final Question question = this.converter.internalize(questionDto);
 		final Question updatedQuestion = this.questionService.update(question);
 		return this.converter.externalize(updatedQuestion);
