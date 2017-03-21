@@ -126,6 +126,33 @@ public class UserService extends BaseRecordService<User> {
 		return user;
 	}
 
+	public User login(final User user) throws ServiceException, ClientException {
+
+		final User foundUser = this.userDao.getByUserName(user.getUserName());
+		final SecureUser secureUser = this.secureUserDao.getByUserId(foundUser.getUserId());
+		final String passwordHash = this.hashingService.getSecuredString(user.getPassword(), secureUser.getSalt());
+		foundUser.setPassword(passwordHash);
+
+		if (!StringUtils.equals(foundUser.getPassword(), passwordHash)) {
+			throw new ClientException("Invalid credentials ");
+		}
+
+		if (StringUtils.isNotEmpty(foundUser.getPersonalDetails().getEmailAddress())) {
+			foundUser.getPersonalDetails().setEmailAddress(
+					this.encryptionService.decrypt(foundUser.getPersonalDetails().getEmailAddress(),
+							secureUser.getSalt()));
+
+		}
+
+		if (StringUtils.isNotEmpty(foundUser.getPersonalDetails().getContactNumber())) {
+			foundUser.getPersonalDetails().setContactNumber(
+					this.encryptionService.decrypt(foundUser.getPersonalDetails().getContactNumber(),
+							secureUser.getSalt()));
+		}
+
+		return foundUser;
+	}
+
 	public QuestionList validate(final User user) throws ServiceException, ClientException {
 		// find user by username
 		final User foundUser = this.userDao.getByUserName(user.getUserName());
