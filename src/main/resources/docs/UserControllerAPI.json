@@ -1,0 +1,218 @@
+User Controller API
+
+
+1) Create User
+
+-- Currently the app break if the username is duplicate. 
+I am tracking this in trello
+
+Request
+
+http://localhost:8080/ws/user
+
+POST
+
+
+{
+	"username":"rvd123asd123",
+	"password":"asdfasdf",
+	"ageGroup":"THIRTIES",
+	"gender":"MALE",
+	"fullName":"adsf adfasdf adsfadf",
+	"email":"ab12313d@gmail.com",
+	"contactNumber":"4646546546"
+	
+}
+
+
+Response
+
+
+{
+  "userId": "fe7702db-d08f-44f8-8466-de434bd7c14b",
+  "username": "rvd123asd123",
+  "password": "",
+  "ageGroup": "THIRTIES",
+  "gender": "MALE",
+  "fullName": "adsf adfasdf adsfadf",
+  "email": "9zuIdzsXnkw2umc9MBsh6rG1PJqKjbQZ9FRARAPf0wM=",
+  "contactNumber": "Tw7JwWEcfjz3SWcANDQxMw=="
+}
+
+
+
+2) Get user by User Id (Password will not be returned.)
+
+Request
+GET 
+http://localhost:8080/ws/user/fe7702db-d08f-44f8-8466-de434bd7c14b
+
+Response
+
+{
+  "userId": "fe7702db-d08f-44f8-8466-de434bd7c14b",
+  "username": "rvd123asd123",
+  "password": "",
+  "ageGroup": "THIRTIES",
+  "gender": "MALE",
+  "fullName": "adsf adfasdf adsfadf",
+  "email": "ab12313d@gmail.com",
+  "contactNumber": "4646546546"
+}
+
+
+3) Get user by userName (Password will not be returned.)
+
+Request 
+GET
+http://localhost:8080/ws/user/userName/rvd123asd123
+
+{
+  "userId": "fe7702db-d08f-44f8-8466-de434bd7c14b",
+  "username": "rvd123asd123",
+  "password": "",
+  "ageGroup": "THIRTIES",
+  "gender": "MALE",
+  "fullName": "adsf adfasdf adsfadf",
+  "email": "ab12313d@gmail.com",
+  "contactNumber": "4646546546"
+}
+
+4) User Login / Validate
+
+http://localhost:8080/ws/user/validate
+
+POST
+
+Request
+
+{
+	"username":"rvd123asd123",
+	"password":"asdfasdf"
+	
+}
+
+
+Response
+
+Returns questions list
+
+
+{
+  "lastQuestionIndex": 13,
+  "limit": 5,
+  "isLastPage": false,
+  "questions": [
+    {
+      "questionId": "93d52bc7-55dd-4b6c-b3db-732f3acf7dd8",
+      "pollQuestion": "This is a test json quest",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "57e30b07-b9ee-4c89-9bbd-af75ace48a5c",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        },
+        {
+          "optionId": "8b0dbd6b-b7f4-4234-ab78-e667c27946fd",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": null,
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "858309d1-2c93-4843-adee-b448a1c0d232",
+      "pollQuestion": "This is a test json quest",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "0334aae1-a4c0-4383-9352-51e7ab563482",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        },
+        {
+          "optionId": "c429e1be-c457-4089-9d5e-79e870d58882",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": null,
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "695b112b-daec-4b05-a3e2-1b4d6c4bda74",
+      "pollQuestion": "First DTO test question",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "285542fc-4221-4d46-8c15-5920a559c2bf",
+          "optionValue": "Yes",
+          "voteCount": 0
+        },
+        {
+          "optionId": "603ccdfa-08f3-4649-83d2-d4b75779456c",
+          "optionValue": "No",
+          "voteCount": 0
+        }
+      ],
+      "userId": null,
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "f6d35fbb-127c-4cb8-aa3e-bc302922327c",
+      "pollQuestion": "First DTO test question",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "525982ec-bb70-487a-835b-8ecd0ef0e7a9",
+          "optionValue": "Yes",
+          "voteCount": 0
+        },
+        {
+          "optionId": "8be4b554-f7d6-44de-9889-c927fba06822",
+          "optionValue": "No",
+          "voteCount": 0
+        }
+      ],
+      "userId": null,
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "dc281e74-5f39-46bf-8596-f3fdf456b73f",
+      "pollQuestion": "First DTO test question",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "1c848fd5-9a46-4cb6-8689-db0cf6e02f9d",
+          "optionValue": "No",
+          "voteCount": 0
+        },
+        {
+          "optionId": "ea55d16d-5c3f-4b9d-92ed-42b86bf3db5a",
+          "optionValue": "Yes",
+          "voteCount": 0
+        }
+      ],
+      "userId": null,
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    }
+  ]
+}
+
+
+
+
+
+
