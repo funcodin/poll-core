@@ -57,6 +57,12 @@ public class UserController implements CrudController<UserDTO> {
 		return this.questionListConverter.externalize(this.userService.validate(user));
 	}
 
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public UserDTO loginUser(@RequestBody final UserDTO userDto) throws ServiceException, ClientException {
+		final User user = this.converter.internalizeValidate(userDto);
+		return this.converter.externalize(user);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
