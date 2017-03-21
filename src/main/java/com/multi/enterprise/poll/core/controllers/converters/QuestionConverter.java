@@ -46,6 +46,7 @@ public class QuestionConverter implements Converter<Question, QuestionDTO> {
 				.getQuestionId());
 		question.setQuestion(questionDto.getPollQuestion());
 		question.setOptionType(questionDto.getOptionType());
+		question.setUserId(questionDto.getUserId());
 
 		for (final OptionDTO optionDto : questionDto.getOptions()) {
 			optionList.add(optionsConverter.internalize(optionDto, question));
