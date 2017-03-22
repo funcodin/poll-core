@@ -131,7 +131,6 @@ public class UserService extends BaseRecordService<User> {
 		final User foundUser = this.userDao.getByUserName(user.getUserName());
 		final SecureUser secureUser = this.secureUserDao.getByUserId(foundUser.getUserId());
 		final String passwordHash = this.hashingService.getSecuredString(user.getPassword(), secureUser.getSalt());
-		foundUser.setPassword(passwordHash);
 
 		if (!StringUtils.equals(foundUser.getPassword(), passwordHash)) {
 			throw new ClientException("Invalid credentials ");
