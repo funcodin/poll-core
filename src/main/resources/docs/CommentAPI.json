@@ -1,0 +1,53 @@
+
+Endpoint:
+http://localhost:8080/ws/comments/create
+
+POST
+Request
+{
+	"questionId":"03de2562-0bc7-40f0-9b2d-d8e0f24a0f6a",
+	"userId":"474a8aa2-43d0-4ff7-bdc6-4428dcb1cb6e",
+	"comment":"This is a 4th random comment"
+	
+}
+
+
+Response
+
+{
+  "lastCommentIndex": 1,
+  "isLastPage": true,
+  "limit": 5,
+  "comments": [
+    {
+      "commentIndex": 5,
+      "questionId": "03de2562-0bc7-40f0-9b2d-d8e0f24a0f6a",
+      "userId": "474a8aa2-43d0-4ff7-bdc6-4428dcb1cb6e",
+      "comment": "This is a 4th random comment"
+    },
+    {
+      "commentIndex": 4,
+      "questionId": "03de2562-0bc7-40f0-9b2d-d8e0f24a0f6a",
+      "userId": "474a8aa2-43d0-4ff7-bdc6-4428dcb1cb6e",
+      "comment": "This is a third random comment"
+    },
+    {
+      "commentIndex": 3,
+      "questionId": "03de2562-0bc7-40f0-9b2d-d8e0f24a0f6a",
+      "userId": "474a8aa2-43d0-4ff7-bdc6-4428dcb1cb6e",
+      "comment": "This is a second random comment"
+    },
+    {
+      "commentIndex": 2,
+      "questionId": "03de2562-0bc7-40f0-9b2d-d8e0f24a0f6a",
+      "userId": "474a8aa2-43d0-4ff7-bdc6-4428dcb1cb6e",
+      "comment": "This is a random comment"
+    },
+    {
+      "commentIndex": 1,
+      "questionId": "03de2562-0bc7-40f0-9b2d-d8e0f24a0f6a",
+      "userId": "474a8aa2-43d0-4ff7-bdc6-4428dcb1cb6e",
+      "comment": "This is a random comment"
+    }
+  ]
+}
