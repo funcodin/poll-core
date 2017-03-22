@@ -52,6 +52,21 @@ public class OptionsDao extends BaseJdbcRecordAccess<Options> {
 		return "options";
 	}
 
+	public void incrementVoteCount(final String optionId) {
+		final int updatedVoteCount = this.getVoteCount(optionId) + 1;
+		this.updateVoteCount(optionId, updatedVoteCount);
+	}
+
+	public void decrementVoteCount(final String optionId) {
+
+		final int voteCount = this.getVoteCount(optionId);
+		if (voteCount <= 0) {
+			return;
+		}
+		this.updateVoteCount(optionId, voteCount - 1);
+
+	}
+
 	public Integer getVoteCount(final String optionId) {
 		return this.jdbcTempalte.query(this.getVoteCountQuery(), this.mapIdParameter(optionId),
 				new ResultSetExtractor<Integer>() {
@@ -62,7 +77,7 @@ public class OptionsDao extends BaseJdbcRecordAccess<Options> {
 				});
 	}
 
-	public void incrementVote(final String optionId, final int voteCount) {
+	private void updateVoteCount(final String optionId, final int voteCount) {
 		this.jdbcTempalte.update(this.updateVoteCountQuery(), this.mapIdandVoteParameter(optionId, voteCount));
 	}
 
