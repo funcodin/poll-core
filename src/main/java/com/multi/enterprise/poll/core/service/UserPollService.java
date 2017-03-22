@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.multi.enterprise.commons.service.BaseRecordService;
 import com.multi.enterprise.poll.core.dao.UserPollDao;
 import com.multi.enterprise.types.exception.ServiceException;
+import com.multi.enterprise.types.poll.Question;
 import com.multi.enterprise.types.poll.UserPoll;
 
 /**
@@ -21,6 +22,9 @@ public class UserPollService extends BaseRecordService<UserPoll> {
 	@Autowired
 	UserPollDao userPollDao;
 
+	@Autowired
+	QuestionService questionService;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -31,14 +35,14 @@ public class UserPollService extends BaseRecordService<UserPoll> {
 		return UserPoll.class;
 	}
 
-	@Override
-	public UserPoll create(final UserPoll userPoll) throws ServiceException {
-		return this.userPollDao.createPoll(userPoll);
+	public Question createPoll(final UserPoll userPoll) throws ServiceException {
+		this.userPollDao.createPoll(userPoll);
+		return this.questionService.getById(userPoll.getQuestionId());
 	}
 
-	@Override
-	public UserPoll update(final UserPoll userPoll) throws ServiceException {
-		return this.userPollDao.updatePoll(userPoll);
+	public Question updatePoll(final UserPoll userPoll) throws ServiceException {
+		this.userPollDao.updatePoll(userPoll);
+		return this.questionService.getById(userPoll.getQuestionId());
 	}
 
 }

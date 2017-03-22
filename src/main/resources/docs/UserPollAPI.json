@@ -1,0 +1,88 @@
+This API is to add and update poll 
+
+Takes user poll data
+
+Return questionDto
+
+Now the UI should calculate the percentage of votes per options as we have total vote count and option vote count.
+
+ADD POLL
+
+http://localhost:8080/ws/userpoll/create
+
+POST
+
+Request:
+
+{
+	"userId":"b2b7a97c-635a-4f51-837a-855b01c6d1df",
+	"questionId":"03de2562-0bc7-40f0-9b2d-d8e0f24a0f6a",
+	"optionId":"f9041a91-4510-4d61-b383-69487b11c9d5"
+}
+
+
+Response:
+
+{
+  "questionId": "03de2562-0bc7-40f0-9b2d-d8e0f24a0f6a",
+  "pollQuestion": "First DTO test question",
+  "optionType": "BINARY",
+  "totalVotes": 3,
+  "options": [
+    {
+      "optionId": "795bafdc-584a-45e1-bdf6-2d6608f0a251",
+      "optionValue": "No",
+      "voteCount": 1
+    },
+    {
+      "optionId": "f9041a91-4510-4d61-b383-69487b11c9d5",
+      "optionValue": "Yes",
+      "voteCount": 2
+    }
+  ],
+  "userId": null,
+  "qrCodeUrl": null,
+  "mediaUrl": null
+}
+
+
+UPDATE POLL
+This is for later functionality
+User can update the poll only from the screen when it clicks on UI to show the questions he voted for and if user wants to change his poll. 
+
+http://localhost:8080/ws/userpoll/update
+
+PUT
+
+Request:
+
+{
+	"userId":"b2b7a97c-635a-4f51-837a-855b01c6d1df",
+	"questionId":"03de2562-0bc7-40f0-9b2d-d8e0f24a0f6a",
+	"optionId":"795bafdc-584a-45e1-bdf6-2d6608f0a251"
+}
+
+
+Response
+
+{
+  "questionId": "03de2562-0bc7-40f0-9b2d-d8e0f24a0f6a",
+  "pollQuestion": "First DTO test question",
+  "optionType": "BINARY",
+  "totalVotes": 3,
+  "options": [
+    {
+      "optionId": "795bafdc-584a-45e1-bdf6-2d6608f0a251",
+      "optionValue": "No",
+      "voteCount": 2
+    },
+    {
+      "optionId": "f9041a91-4510-4d61-b383-69487b11c9d5",
+      "optionValue": "Yes",
+      "voteCount": 1
+    }
+  ],
+  "userId": null,
+  "qrCodeUrl": null,
+  "mediaUrl": null
+}
