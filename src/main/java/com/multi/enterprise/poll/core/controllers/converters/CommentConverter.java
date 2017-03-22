@@ -3,9 +3,6 @@
  */
 package com.multi.enterprise.poll.core.controllers.converters;
 
-import java.util.UUID;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.multi.enterprise.types.poll.Comment;
@@ -26,7 +23,6 @@ public class CommentConverter implements Converter<Comment, CommentDTO> {
 	@Override
 	public Comment internalize(CommentDTO entity) {
 		final Comment comment = new Comment();
-		comment.setId(StringUtils.isEmpty(entity.getId()) ? UUID.randomUUID().toString() : entity.getId());
 		comment.setComment(entity.getComment());
 		comment.setUserId(entity.getUserId());
 		comment.setQuestionId(entity.getQuestionId());
@@ -44,7 +40,6 @@ public class CommentConverter implements Converter<Comment, CommentDTO> {
 		final CommentDTO commentDto = new CommentDTO();
 		commentDto.setComment(entity.getComment());
 		commentDto.setCommentIndex(entity.getCommentIndex());
-		commentDto.setId(entity.getId());
 		commentDto.setQuestionId(entity.getQuestionId());
 		commentDto.setUserId(entity.getUserId());
 		return commentDto;

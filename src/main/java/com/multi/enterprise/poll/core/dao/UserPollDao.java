@@ -21,8 +21,6 @@ public class UserPollDao extends BaseJdbcRecordAccess<UserPoll> {
 	 * @see com.multi.enterprise.types.dao.RecordAccess#getDocumentClass()
 	 */
 
-	private final String CREATE_USER_POLL = "insert into user_poll set() values ()";
-
 	@Override
 	public Class<UserPoll> getDocumentClass() {
 		return UserPoll.class;
