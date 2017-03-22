@@ -51,6 +51,15 @@ public class CommentsController implements CrudController<CommentDTO> {
 		return this.commentConverter.externalize(createdComment);
 	}
 
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public CommentListDTO createComment(@RequestBody CommentDTO create) throws ServiceException {
+		final Comment comment = this.commentConverter.internalize(create);
+		final CommentList commentList = this.commentService.getPaginatedCommentsForQuestion(comment.getQuestionId(), 0,
+				5);
+
+		return this.commentListConverter.externalize(commentList);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

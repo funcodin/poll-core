@@ -24,13 +24,13 @@ import com.multi.enterprise.types.poll.CommentList;
 @Repository
 public class CommentDao extends BaseJdbcRecordAccess<Comment> {
 
-	private String GET_PAGINATED_COMMENTS_BY_QUESTION_ID = "select comment_index, question_id, user_id, comment, created_date, modified_date where question_id = :question_id and comment_index < %d order by comment_index desc limit %d";
+	private String GET_PAGINATED_COMMENTS_BY_QUESTION_ID = "select comment_index, question_id, user_id, comment, created_date, modified_date from user_comments where question_id = :question_id and comment_index < %d order by comment_index desc limit %d";
 
-	private String GET_FIRST_PAGE_COMMENTS_BY_QUESTION_ID = "select comment_index, question_id, user_id, comment, created_date, modified_date where question_id = :question_id order by comment_index desc limit %d";
+	private String GET_FIRST_PAGE_COMMENTS_BY_QUESTION_ID = "select comment_index, question_id, user_id, comment, created_date, modified_date from user_comments where question_id = :question_id order by comment_index desc limit %d";
 
-	private String GET_PAGINATED_COMMENTS_BY_USERID = "select comment_index, question_id, user_id, comment, created_date, modified_date where user_id = :user_id and comment_index < %d order by comment_index desc limit %d";
+	private String GET_PAGINATED_COMMENTS_BY_USERID = "select comment_index, question_id, user_id, comment, created_date, modified_date from user_comments where user_id = :user_id and comment_index < %d order by comment_index desc limit %d";
 
-	private String GET_FIRST_PAGINATED_COMMENTS_BY_USERID = "select comment_index, question_id, user_id, comment, created_date, modified_date where user_id = :user_id by comment_index desc limit %d";
+	private String GET_FIRST_PAGINATED_COMMENTS_BY_USERID = "select comment_index, question_id, user_id, comment, created_date, modified_date from user_comments where user_id = :user_id by comment_index desc limit %d";
 
 	public CommentList getPaginatedCommentsByUserId(final String userId, final int commentIndex, final int limit) {
 
