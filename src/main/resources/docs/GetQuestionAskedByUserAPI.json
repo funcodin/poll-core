@@ -1,0 +1,95 @@
+GET LATEST QUESTIONS ASKED BY USER
+
+REQUEST
+GET
+
+http://localhost:8080/ws/question/latestByUser/user/fe7702db-d08f-44f8-8466-de434bd7c14b/limit/5
+
+RESPONSE
+
+{
+  "lastQuestionIndex": 27,
+  "limit": 5,
+  "isLastPage": true,
+  "questions": [
+    {
+      "questionId": "7f90b0bc-7332-4572-9333-7d15d4a0e0d1",
+      "pollQuestion": "This is fe7702db-d08f-44f8-8466-de434bd7c14b fe7702db-d08f-44f8-8466-de434bd7c14b test json quest 627863f2-898c-459f-baa4-4cfea4557a8f",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "4aaa74ed-3ba7-4120-8868-d7dbb12bb326",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        },
+        {
+          "optionId": "d44e6b70-ce75-43b0-ad59-ebe92f5c8ce6",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "fe7702db-d08f-44f8-8466-de434bd7c14b",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "7fa23a52-4ac7-4699-b1b4-80cabd98165a",
+      "pollQuestion": "This is fe7702db-d08f-44f8-8466-de434bd7c14b test json quest 627863f2-898c-459f-baa4-4cfea4557a8f",
+      "optionType": "BINARY",
+      "totalVotes": 2,
+      "options": [
+        {
+          "optionId": "822c3e4a-6979-43d7-96ab-7056cd07f731",
+          "optionValue": "BINARY",
+          "voteCount": 2
+        },
+        {
+          "optionId": "97572282-86a0-4f67-9844-815057235f5a",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "fe7702db-d08f-44f8-8466-de434bd7c14b",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    }
+  ]
+}
+
+
+GET PAGINATED QUESTIONS ASKED BY USER
+
+REQUEST
+GET
+http://localhost:8080/ws/question/getPaginatedQuestionByUser/user/fe7702db-d08f-44f8-8466-de434bd7c14b/lastQuestionIndex/28/limit/5
+
+RESPONSE
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<questionList>
+    <lastQuestionIndex>27</lastQuestionIndex>
+    <limit>5</limit>
+    <isLastPage>true</isLastPage>
+    <questions>
+        <question>
+            <questionId>7fa23a52-4ac7-4699-b1b4-80cabd98165a</questionId>
+            <pollQuestion>This is fe7702db-d08f-44f8-8466-de434bd7c14b test json quest 627863f2-898c-459f-baa4-4cfea4557a8f</pollQuestion>
+            <optionType>BINARY</optionType>
+            <totalVotes>2</totalVotes>
+            <options>
+                <optionId>822c3e4a-6979-43d7-96ab-7056cd07f731</optionId>
+                <optionValue>BINARY</optionValue>
+                <voteCount>2</voteCount>
+            </options>
+            <options>
+                <optionId>97572282-86a0-4f67-9844-815057235f5a</optionId>
+                <optionValue>BINARY</optionValue>
+                <voteCount>0</voteCount>
+            </options>
+            <userId>fe7702db-d08f-44f8-8466-de434bd7c14b</userId>
+        </question>
+    </questions>
+</questionList>
+
+

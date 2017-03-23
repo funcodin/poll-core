@@ -31,6 +31,10 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 			+ " ( select distinct(question_id) from user_poll where user_id = '%s' ) "
 			+ "and userId <> '%s' and question_index < %d order by question_index desc limit %d";
 
+	private String SELECT_PAGINATED_QUESTION_ASKED_BY_USER = "select * from question where userId = '%s' and question_index < %d order by question_index desc limit %d";
+
+	private String SELECT_LATEST_PAGINATED_QUESTION_ASKED_BY_USER = "SELECT * FROM question where userId = '%s' order by question_index desc limit %d";
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -54,6 +58,8 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 
 	}
 
+	// Functionality to return questions not asked and voted by user
+
 	public QuestionList getLatestPaginatedQuestionForUser(final String userId, final int limit) {
 		final String query = String.format(SELECT_LASTEST_PAGINATED_QUESTION_FOR_USER, userId, userId, limit);
 		final List<Question> questions = this.jdbcTempalte.query(query, this.rowMapper);
@@ -66,6 +72,20 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 		final List<Question> questions = this.jdbcTempalte.query(query, this.rowMapper);
 		return this.convertToQuestionList(questions, limit);
 
+	}
+
+	// Functionality to return paginated questions asked by user
+
+	public QuestionList getLatestPaginatedQuestionAskedByUser(final String userId, final int limit) {
+		final String query = String.format(SELECT_LATEST_PAGINATED_QUESTION_ASKED_BY_USER, userId, limit);
+		final List<Question> questions = this.jdbcTempalte.query(query, this.rowMapper);
+		return this.convertToQuestionList(questions, limit);
+	}
+
+	public QuestionList getPaginatedQuestionAskedByUser(final String userId, final int questionIndex, final int limit) {
+		final String query = String.format(SELECT_PAGINATED_QUESTION_ASKED_BY_USER, userId, questionIndex, limit);
+		final List<Question> questions = this.jdbcTempalte.query(query, this.rowMapper);
+		return this.convertToQuestionList(questions, limit);
 	}
 
 	private QuestionList convertToQuestionList(final List<Question> questions, final int limit) {

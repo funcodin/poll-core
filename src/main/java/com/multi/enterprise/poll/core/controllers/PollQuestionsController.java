@@ -109,9 +109,24 @@ public class PollQuestionsController implements CrudController<QuestionDTO> {
 	}
 
 	@RequestMapping(value = "getPaginatedQuestion/user/{userId}/lastQuestionIndex/{lastQuestionIndex}/limit/{limit}", method = RequestMethod.GET)
-	public QuestionListDTO getQuestionsForUser(@PathVariable final int lastQuestionIndex, @PathVariable final int limit)
-			throws ServiceException {
-		final QuestionList questionList = this.questionService.getPaginatedQuestionForUser(null, lastQuestionIndex,
+	public QuestionListDTO getQuestionsForUser(@PathVariable final String userId,
+			@PathVariable final int lastQuestionIndex, @PathVariable final int limit) throws ServiceException {
+		final QuestionList questionList = this.questionService.getPaginatedQuestionForUser(userId, lastQuestionIndex,
+				limit);
+		return this.questionListConverter.externalize(questionList);
+	}
+
+	@RequestMapping(value = "latestByUser/user/{userId}/limit/{limit}", method = RequestMethod.GET)
+	public QuestionListDTO getLatestPaginationQuestionsByUser(@PathVariable final String userId,
+			@PathVariable final int limit) throws ServiceException {
+		final QuestionList questionList = this.questionService.getLatestPaginatedQuestionByUser(userId, limit);
+		return this.questionListConverter.externalize(questionList);
+	}
+
+	@RequestMapping(value = "getPaginatedQuestionByUser/user/{userId}/lastQuestionIndex/{lastQuestionIndex}/limit/{limit}", method = RequestMethod.GET)
+	public QuestionListDTO getQuestionsByUser(@PathVariable final String userId,
+			@PathVariable final int lastQuestionIndex, @PathVariable final int limit) throws ServiceException {
+		final QuestionList questionList = this.questionService.getPaginatedQuestionByUser(userId, lastQuestionIndex,
 				limit);
 		return this.questionListConverter.externalize(questionList);
 	}

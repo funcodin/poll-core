@@ -101,6 +101,19 @@ public class QuestionService extends BaseRecordService<Question> {
 		return questionList;
 	}
 
+	public QuestionList getLatestPaginatedQuestionByUser(final String userId, final int limit) {
+		final QuestionList questionList = this.questionDao.getLatestPaginatedQuestionAskedByUser(userId, limit);
+		this.populateOptionValue(questionList);
+		return questionList;
+	}
+
+	public QuestionList getPaginatedQuestionByUser(final String userId, final int lastQuestionId, final int limit) {
+		final QuestionList questionList = this.questionDao.getPaginatedQuestionAskedByUser(userId, lastQuestionId,
+				limit);
+		this.populateOptionValue(questionList);
+		return questionList;
+	}
+
 	private void populateOptionValue(final QuestionList questionList) {
 		for (final Question question : questionList.getQuestions()) {
 			final List<Options> options = this.optionsDao.getAllOptionsByQuestionId(question.getId());
