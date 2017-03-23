@@ -35,6 +35,14 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 
 	private String SELECT_LATEST_PAGINATED_QUESTION_ASKED_BY_USER = "SELECT * FROM question where userId = '%s' order by question_index desc limit %d";
 
+	private String SELECT_LATEST_PAGINATED_QUESTION_VOTED_BY_USER = "select a.question_index, a.id, a.question, a.option_type, a.userId, a.qr_code_url, a.media_url, a.created_date, a.modified_date from question a"
+			+ " join user_poll b on"
+			+ " a.id = b.question_id and b.user_id = '%s' order by a.question_index desc limit %d";
+
+	private String SELECT_PAGINATED_QUESTION_VOTED_BY_USER = "select a.question_index, a.id, a.question, a.option_type, a.userId, a.qr_code_url, a.media_url, a.created_date, a.modified_date from question a"
+			+ " join user_poll b on"
+			+ " a.id = b.question_id and b.user_id = '%s' and a.question_index < %d order by a.question_index desc limit %d";
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -84,6 +92,20 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 
 	public QuestionList getPaginatedQuestionAskedByUser(final String userId, final int questionIndex, final int limit) {
 		final String query = String.format(SELECT_PAGINATED_QUESTION_ASKED_BY_USER, userId, questionIndex, limit);
+		final List<Question> questions = this.jdbcTempalte.query(query, this.rowMapper);
+		return this.convertToQuestionList(questions, limit);
+	}
+
+	// Functionality to return paginated question voted by user
+
+	public QuestionList getLatestPaginatedQuestionVotedByUser(final String userId, final int limit) {
+		final String query = String.format(SELECT_LATEST_PAGINATED_QUESTION_VOTED_BY_USER, userId, limit);
+		final List<Question> questions = this.jdbcTempalte.query(query, this.rowMapper);
+		return this.convertToQuestionList(questions, limit);
+	}
+
+	public QuestionList getPaginatedQuestionVotedByUser(final String userId, final int questionIndex, final int limit) {
+		final String query = String.format(SELECT_PAGINATED_QUESTION_VOTED_BY_USER, userId, questionIndex, limit);
 		final List<Question> questions = this.jdbcTempalte.query(query, this.rowMapper);
 		return this.convertToQuestionList(questions, limit);
 	}

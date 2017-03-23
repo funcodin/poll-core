@@ -131,4 +131,19 @@ public class PollQuestionsController implements CrudController<QuestionDTO> {
 		return this.questionListConverter.externalize(questionList);
 	}
 
+	@RequestMapping(value = "latestVotedByUser/user/{userId}/limit/{limit}", method = RequestMethod.GET)
+	public QuestionListDTO getLatestPaginationQuestionsVotedByUser(@PathVariable final String userId,
+			@PathVariable final int limit) throws ServiceException {
+		final QuestionList questionList = this.questionService.getLatestPaginatedQuestionVotedByUser(userId, limit);
+		return this.questionListConverter.externalize(questionList);
+	}
+
+	@RequestMapping(value = "getPaginatedQuestionVotedByUser/user/{userId}/lastQuestionIndex/{lastQuestionIndex}/limit/{limit}", method = RequestMethod.GET)
+	public QuestionListDTO getQuestionsVotedByUser(@PathVariable final String userId,
+			@PathVariable final int lastQuestionIndex, @PathVariable final int limit) throws ServiceException {
+		final QuestionList questionList = this.questionService.getPaginatedQuestionVotedByUser(userId,
+				lastQuestionIndex, limit);
+		return this.questionListConverter.externalize(questionList);
+	}
+
 }
