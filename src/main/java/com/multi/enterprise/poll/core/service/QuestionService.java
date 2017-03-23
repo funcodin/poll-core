@@ -79,24 +79,35 @@ public class QuestionService extends BaseRecordService<Question> {
 
 	public QuestionList getPaginatedQuestion(final int lastQuestionIndex, final int limit) {
 		final QuestionList questionList = this.questionDao.getPaginatedQuestion(lastQuestionIndex, limit);
-
-		for (Question question : questionList.getQuestions()) {
-			final List<Options> options = this.optionsDao.getAllOptionsByQuestionId(question.getId());
-			question.setTotalVotes(options.stream().mapToInt(option -> option.getVoteCount()).sum());
-			question.setOptions(options);
-		}
+		this.populateOptionValue(questionList);
 		return questionList;
 	}
 
 	public QuestionList getLatestPaginatedQuestion(final int limit) {
 		final QuestionList questionList = this.questionDao.getLatestPaginatedQuestion(limit);
+		this.populateOptionValue(questionList);
+		return questionList;
+	}
 
-		for (Question question : questionList.getQuestions()) {
+	public QuestionList getLatestPaginatedQuestionForUser(final String userId, final int limit) {
+		final QuestionList questionList = this.questionDao.getLatestPaginatedQuestionForUser(userId, limit);
+		this.populateOptionValue(questionList);
+		return questionList;
+	}
+
+	public QuestionList getPaginatedQuestionForUser(final String userId, final int lastQuestionId, final int limit) {
+		final QuestionList questionList = this.questionDao.getPaginatedQuestionForUser(userId, lastQuestionId, limit);
+		this.populateOptionValue(questionList);
+		return questionList;
+	}
+
+	private void populateOptionValue(final QuestionList questionList) {
+		for (final Question question : questionList.getQuestions()) {
 			final List<Options> options = this.optionsDao.getAllOptionsByQuestionId(question.getId());
 			question.setTotalVotes(options.stream().mapToInt(option -> option.getVoteCount()).sum());
 			question.setOptions(options);
 		}
-		return questionList;
+
 	}
 
 }
