@@ -1,0 +1,97 @@
+GET LATEST PAGINATED QUESTION VOTED BY USER 
+
+REQUEST
+GET 
+http://localhost:8080/ws/question/latestVotedByUser/user/fe7702db-d08f-44f8-8466-de434bd7c14b/limit/5
+
+RESPONSE
+
+{
+  "lastQuestionIndex": 26,
+  "limit": 5,
+  "isLastPage": true,
+  "questions": [
+    {
+      "questionId": "7fa23a52-4ac7-4699-b1b4-80cabd98165a",
+      "pollQuestion": "This is fe7702db-d08f-44f8-8466-de434bd7c14b test json quest 627863f2-898c-459f-baa4-4cfea4557a8f",
+      "optionType": "BINARY",
+      "totalVotes": 2,
+      "options": [
+        {
+          "optionId": "822c3e4a-6979-43d7-96ab-7056cd07f731",
+          "optionValue": "BINARY",
+          "voteCount": 2
+        },
+        {
+          "optionId": "97572282-86a0-4f67-9844-815057235f5a",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "fe7702db-d08f-44f8-8466-de434bd7c14b",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "97e16778-432b-4640-bfbc-e93756aad1ba",
+      "pollQuestion": "This is d623c44d-cb40-d623c44d-cb40-4b68-8cec-03d270a9a7e64b68-8cec-03d270a9a7e6 test json quest 627863f2-898c-459f-baa4-4cfea4557a8f",
+      "optionType": "BINARY",
+      "totalVotes": 1,
+      "options": [
+        {
+          "optionId": "22375172-5a82-4493-b65d-b5859f83d258",
+          "optionValue": "BINARY",
+          "voteCount": 1
+        },
+        {
+          "optionId": "a33d5541-7cf6-4fa7-b17f-452d698348eb",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "d623c44d-cb40-4b68-8cec-03d270a9a7e6",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    }
+  ]
+}
+
+
+GET PAGINATED QUESTIONS VOTED BY USER
+
+REQUEST 
+GET 
+
+http://localhost:8080/ws/question/getPaginatedQuestionVotedByUser/user/fe7702db-d08f-44f8-8466-de434bd7c14b/lastQuestionIndex/27/limit/5
+
+RESPONSE 
+
+{
+  "lastQuestionIndex": 26,
+  "limit": 5,
+  "isLastPage": true,
+  "questions": [
+    {
+      "questionId": "97e16778-432b-4640-bfbc-e93756aad1ba",
+      "pollQuestion": "This is d623c44d-cb40-d623c44d-cb40-4b68-8cec-03d270a9a7e64b68-8cec-03d270a9a7e6 test json quest 627863f2-898c-459f-baa4-4cfea4557a8f",
+      "optionType": "BINARY",
+      "totalVotes": 1,
+      "options": [
+        {
+          "optionId": "22375172-5a82-4493-b65d-b5859f83d258",
+          "optionValue": "BINARY",
+          "voteCount": 1
+        },
+        {
+          "optionId": "a33d5541-7cf6-4fa7-b17f-452d698348eb",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "d623c44d-cb40-4b68-8cec-03d270a9a7e6",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    }
+  ]
+}
+
