@@ -1,0 +1,181 @@
+Get Latest Paginated Question for User 
+
+
+REQUEST
+GET 
+http://localhost:8080/ws/question/latest/user/fe7702db-d08f-44f8-8466-de434bd7c14b/limit/5
+
+
+RESPONSE
+
+{
+  "lastQuestionIndex": 21,
+  "limit": 5,
+  "isLastPage": false,
+  "questions": [
+    {
+      "questionId": "672254a7-16f6-4685-b80c-1b60a153caeb",
+      "pollQuestion": "This is d623c44d-cb40-4b68-8cec-03d270a9a7e6 test json quest 627863f2-898c-459f-baa4-4cfea4557a8f",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "508b0e91-51de-4378-b7a1-d91652293323",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        },
+        {
+          "optionId": "ab9ab109-7f6d-4e49-8341-422d488068c1",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "d623c44d-cb40-4b68-8cec-03d270a9a7e6",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "2246e41c-1baa-4b91-a70b-b39d00cb3056",
+      "pollQuestion": "This is ab2b7a97c-635a-4f51-837a-b2b7a97c-635a-4f51-837a-855b01c6d1df855b01c6d1df test json quest 627863f2-898c-459f-baa4-4cfea4557a8f",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "3177866d-25da-4668-9274-8b113edacc77",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        },
+        {
+          "optionId": "bc6125be-cd5c-43aa-be2d-1d604e3d6e72",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "b2b7a97c-635a-4f51-837a-855b01c6d1df",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "239e3c3e-a5cc-406c-a5cf-f29a8191c6d9",
+      "pollQuestion": "This is ab2b7a97c-635a-4f51-837a-855b01c6d1df test json quest 627863f2-898c-459f-baa4-4cfea4557a8f",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "50616497-a92a-48b8-b494-7a9774bb1746",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        },
+        {
+          "optionId": "bb7f55cb-c3bd-41b7-9c5b-85c975aed997",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "b2b7a97c-635a-4f51-837a-855b01c6d1df",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "5340b4e8-a518-4e2e-8a1d-be8e002cb7e4",
+      "pollQuestion": "This is a 627863f2-898c-459f-baa4-4cfea4557a8f test json quest 627863f2-898c-459f-baa4-4cfea4557a8f",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "82a8ee18-c9a6-4786-8010-42cb82766a85",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        },
+        {
+          "optionId": "dc36bf8d-b447-48b1-84d1-1eff1bec49dd",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "627863f2-898c-459f-baa4-4cfea4557a8f",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "d1134e8b-8e91-434c-8e15-a8e3f4a8331e",
+      "pollQuestion": "This is a 627863f2-898c-459f-baa4-4cfea4557a8f test json quest",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "7db2ac97-79f9-4f52-b1a4-c46f014626f5",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        },
+        {
+          "optionId": "960ac75b-5f53-4fcb-8a87-f3d580861ac5",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "627863f2-898c-459f-baa4-4cfea4557a8f",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    }
+  ]
+}
+
+
+
+GET NEXT PAGINATED PAGE FOR USER 
+
+REQUEST 
+GET
+http://localhost:8080/ws/question/getPaginatedQuestion/user/fe7702db-d08f-44f8-8466-de434bd7c14b/lastQuestionIndex/21/limit/5
+
+RESPONSE
+{
+  "lastQuestionIndex": 19,
+  "limit": 5,
+  "isLastPage": true,
+  "questions": [
+    {
+      "questionId": "10980a9a-df2f-40a0-b713-794526b30c64",
+      "pollQuestion": "This is a second test json quest",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "9a5f6229-4d2c-4094-9455-17503210c2fb",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        },
+        {
+          "optionId": "c76a1a1e-136a-4930-a203-13e01c8ba431",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "474a8aa2-43d0-4ff7-bdc6-4428dcb1cb6e",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    },
+    {
+      "questionId": "d2332c22-d0de-4b22-bce2-752dead51b18",
+      "pollQuestion": "This is a test json quest",
+      "optionType": "BINARY",
+      "totalVotes": 0,
+      "options": [
+        {
+          "optionId": "04857ea8-7200-426c-8cd2-37969cf14385",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        },
+        {
+          "optionId": "c45dac7f-156f-462a-ba55-5affb8a9baea",
+          "optionValue": "BINARY",
+          "voteCount": 0
+        }
+      ],
+      "userId": "474a8aa2-43d0-4ff7-bdc6-4428dcb1cb6e",
+      "qrCodeUrl": null,
+      "mediaUrl": null
+    }
+  ]
+}
