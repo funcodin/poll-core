@@ -3,6 +3,7 @@
  */
 package com.multi.enterprise.poll.core.controllers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -89,8 +90,12 @@ public class UserController implements CrudController<UserDTO> {
 	@Override
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	public UserDTO update(@RequestBody UserDTO update) throws ServiceException {
-		// TODO Auto-generated method stub
-		return null;
+		if (StringUtils.isEmpty(update.getUserId())) {
+			throw new ServiceException(" User Id is required ");
+		}
+		final User user = this.converter.internalize(update);
+		final User updatedUser = this.userService.update(user);
+		return this.converter.externalize(updatedUser);
 	}
 
 	/*
