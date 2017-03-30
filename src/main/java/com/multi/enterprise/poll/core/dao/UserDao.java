@@ -32,6 +32,8 @@ public class UserDao extends BaseJdbcRecordAccess<User> {
 			+ " inner join user_details b on a.id = b.user_id"
 			+ " inner join user_personal_info c on a.id = c.user_id" + " where a.id = :id";
 
+	private String UPDATE_PASSWORD = "update user set password = '%s' where id = :id";
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -53,6 +55,12 @@ public class UserDao extends BaseJdbcRecordAccess<User> {
 		final List<User> users = this.jdbcTempalte
 				.query(SELECT_BY_USERID, this.mapParams("id", userId), this.rowMapper);
 		return CollectionUtils.isEmpty(users) ? null : users.get(0);
+	}
+
+	public User update(final User user) {
+		final String query = String.format(UPDATE_PASSWORD, user.getPassword());
+		this.jdbcTempalte.update(query, this.mapParams("id", user.getUserId()));
+		return user;
 	}
 
 	protected MapSqlParameterSource mapParams(final String columnName, final String columnValue) {

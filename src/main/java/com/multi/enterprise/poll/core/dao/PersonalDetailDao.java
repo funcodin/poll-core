@@ -23,6 +23,8 @@ public class PersonalDetailDao extends BaseJdbcRecordAccess<UserPersonalDetails>
 
 	private String SELECT_BY_USERID = "select * from user_personal_info where user_id = :user_id";
 
+	private String UPDATE_PERSONAL_DETAIL = "update user_personal_info set full_name='%s', email='%s', contact='%s' where user_id = :user_id";
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -43,5 +45,14 @@ public class PersonalDetailDao extends BaseJdbcRecordAccess<UserPersonalDetails>
 		final Map<String, Object> param = new HashMap<>();
 		param.put(columnName, columnValue);
 		return new MapSqlParameterSource(param);
+	}
+
+	@Override
+	public UserPersonalDetails update(final UserPersonalDetails personalDetails) {
+		final String query = String.format(UPDATE_PERSONAL_DETAIL, personalDetails.getFullName(),
+				personalDetails.getEmailAddress(), personalDetails.getContactNumber());
+		this.jdbcTempalte.update(query, this.mapParams("user_id", personalDetails.getUserId()));
+		return personalDetails;
+
 	}
 }

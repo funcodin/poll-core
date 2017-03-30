@@ -211,7 +211,31 @@ Returns questions list
   ]
 }
 
+3) Update User Info
+User ID is required in request
+http://localhost:8080/ws/user
+PUT
 
+Request
+
+{
+  "userId": "fe7702db-d08f-44f8-8466-de434bd7c14b",
+  "email": "rvd9@njit.edu"
+ 
+}
+
+Response
+
+{
+  "userId": "fe7702db-d08f-44f8-8466-de434bd7c14b",
+  "username": "rvd123asd123",
+  "password": "",
+  "ageGroup": "THIRTIES",
+  "gender": "MALE",
+  "fullName": "test update",
+  "email": "rvd9@njit.edu",
+  "contactNumber": "4646546546"
+}
 
 
 

@@ -4,6 +4,7 @@
 package com.multi.enterprise.poll.core.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import com.multi.enterprise.types.poll.Question;
 import com.multi.enterprise.types.poll.QuestionList;
 import com.multi.enterprise.types.poll.accounts.SecureUser;
 import com.multi.enterprise.types.poll.accounts.User;
+import com.multi.enterprise.types.poll.accounts.UserDetails;
+import com.multi.enterprise.types.poll.accounts.UserPersonalDetails;
 
 /**
  * @author Robot
@@ -173,5 +176,79 @@ public class UserService extends BaseRecordService<User> {
 			question.setOptions(options);
 		}
 		return questionList;
+	}
+
+	@Override
+	public User update(final User user) throws ServiceException {
+
+		final User foundUser = this.userDao.getByUserId(user.getUserId());
+		final SecureUser secureUser = this.secureUserDao.getByUserId(user.getUserId());
+		if (Objects.isNull(foundUser)) {
+			throw new ServiceException(" Unable to find user ");
+		}
+
+		foundUser.setPersonalDetails(this.updateUserPersonalDetails(user.getPersonalDetails(),
+				foundUser.getPersonalDetails(), secureUser));
+
+		foundUser.setUserDetails(this.updateUserDetails(user.getUserDetails(), foundUser.getUserDetails()));
+
+		if (StringUtils.isNotEmpty(user.getPassword())) {
+			foundUser.setPassword(this.hashingService.getSecuredString(user.getPassword(), secureUser.getSalt()));
+		}
+
+		this.userDao.update(foundUser);
+		this.userDetailDao.update(foundUser.getUserDetails());
+		this.personalDetailDao.update(foundUser.getPersonalDetails());
+
+		return this.getUserById(foundUser.getUserId());
+	}
+
+	private UserDetails updateUserDetails(final UserDetails userDetails, final UserDetails foundUserDetails) {
+
+		if (Objects.isNull(userDetails)) {
+			return foundUserDetails;
+		}
+
+		if (Objects.isNull(foundUserDetails)) {
+			return userDetails;
+		}
+
+		if (Objects.nonNull(userDetails.getAgeGroup())) {
+			foundUserDetails.setAgeGroup(userDetails.getAgeGroup());
+		}
+
+		if (Objects.nonNull(userDetails.getGender())) {
+			foundUserDetails.setGender(userDetails.getGender());
+		}
+		return foundUserDetails;
+	}
+
+	private UserPersonalDetails updateUserPersonalDetails(final UserPersonalDetails userPersonalDetails,
+			final UserPersonalDetails foundUserPersonalDetails, final SecureUser secureUser) throws ServiceException {
+
+		if (Objects.isNull(userPersonalDetails)) {
+			return foundUserPersonalDetails;
+		}
+
+		if (Objects.isNull(foundUserPersonalDetails)) {
+			return userPersonalDetails;
+		}
+
+		if (StringUtils.isNotEmpty(userPersonalDetails.getContactNumber())) {
+
+			foundUserPersonalDetails.setContactNumber(this.encryptionService.encrypt(
+					userPersonalDetails.getContactNumber(), secureUser.getSalt()));
+		}
+
+		if (StringUtils.isNotEmpty(userPersonalDetails.getFullName())) {
+			foundUserPersonalDetails.setFullName(userPersonalDetails.getFullName());
+		}
+
+		if (StringUtils.isNotEmpty(userPersonalDetails.getEmailAddress())) {
+			foundUserPersonalDetails.setEmailAddress(this.encryptionService.encrypt(
+					userPersonalDetails.getEmailAddress(), secureUser.getSalt()));
+		}
+		return foundUserPersonalDetails;
+
 	}
 }
