@@ -23,6 +23,8 @@ public class UserDetailDao extends BaseJdbcRecordAccess<UserDetails> {
 
 	private String SELECT_BY_USERID = "select * from user_details where user_id = :user_id";
 
+	private String UPDATE_USER_DETAILS = "update user_details set gender ='%s', age_group='%s' where user_id = :user_id";
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -37,6 +39,14 @@ public class UserDetailDao extends BaseJdbcRecordAccess<UserDetails> {
 		final List<UserDetails> userDetailList = this.jdbcTempalte.query(SELECT_BY_USERID,
 				this.mapParams("user_id", userId), this.rowMapper);
 		return CollectionUtils.isEmpty(userDetailList) ? null : userDetailList.get(0);
+	}
+
+	@Override
+	public UserDetails update(final UserDetails userDetails) {
+		final String query = String.format(UPDATE_USER_DETAILS, userDetails.getGender().name(), userDetails
+				.getAgeGroup().name());
+		this.jdbcTempalte.update(query, this.mapParams("user_id", userDetails.getUserId()));
+		return userDetails;
 	}
 
 	protected MapSqlParameterSource mapParams(final String columnName, final String columnValue) {
