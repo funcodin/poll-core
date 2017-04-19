@@ -6,6 +6,7 @@ package com.multi.enterprise.poll.core.dao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public class PersonalDetailDao extends BaseJdbcRecordAccess<UserPersonalDetails>
 
 	private String SELECT_BY_USERID = "select * from user_personal_info where user_id = :user_id";
 
-	private String UPDATE_PERSONAL_DETAIL = "update user_personal_info set full_name='%s', email='%s', contact='%s' where user_id = :user_id";
+	private String UPDATE_PERSONAL_DETAIL = "update user_personal_info set full_name=:full_name, email=:email, contact= :contact where user_id = :user_id";
 
 	/*
 	 * (non-Javadoc)
@@ -49,9 +50,14 @@ public class PersonalDetailDao extends BaseJdbcRecordAccess<UserPersonalDetails>
 
 	@Override
 	public UserPersonalDetails update(final UserPersonalDetails personalDetails) {
-		final String query = String.format(UPDATE_PERSONAL_DETAIL, personalDetails.getFullName(),
-				personalDetails.getEmailAddress(), personalDetails.getContactNumber());
-		this.jdbcTempalte.update(query, this.mapParams("user_id", personalDetails.getUserId()));
+
+		final Map<String, Object> param = new HashMap<>();
+		param.put("user_id", personalDetails.getUserId());
+		param.put("full_name", Objects.isNull(personalDetails.getFullName()) ? null : personalDetails.getFullName());
+		param.put("email", Objects.isNull(personalDetails.getEmailAddress()) ? null : personalDetails.getEmailAddress());
+		param.put("contact",
+				Objects.isNull(personalDetails.getContactNumber()) ? null : personalDetails.getContactNumber());
+		this.jdbcTempalte.update(UPDATE_PERSONAL_DETAIL, new MapSqlParameterSource(param));
 		return personalDetails;
 
 	}

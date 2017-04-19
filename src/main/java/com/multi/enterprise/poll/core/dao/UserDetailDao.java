@@ -6,6 +6,7 @@ package com.multi.enterprise.poll.core.dao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public class UserDetailDao extends BaseJdbcRecordAccess<UserDetails> {
 
 	private String SELECT_BY_USERID = "select * from user_details where user_id = :user_id";
 
-	private String UPDATE_USER_DETAILS = "update user_details set gender ='%s', age_group='%s' where user_id = :user_id";
+	private String UPDATE_USER_DETAILS = "update user_details set gender = :gender, age_group = :age_group where user_id = :user_id";
 
 	/*
 	 * (non-Javadoc)
@@ -43,15 +44,24 @@ public class UserDetailDao extends BaseJdbcRecordAccess<UserDetails> {
 
 	@Override
 	public UserDetails update(final UserDetails userDetails) {
-		final String query = String.format(UPDATE_USER_DETAILS, userDetails.getGender().name(), userDetails
-				.getAgeGroup().name());
-		this.jdbcTempalte.update(query, this.mapParams("user_id", userDetails.getUserId()));
+		this.jdbcTempalte.update(UPDATE_USER_DETAILS, this.mapParams("user_id", userDetails.getUserId(), "gender",
+				Objects.isNull(userDetails.getGender()) ? null : userDetails.getGender().name(), "age_group",
+				Objects.isNull(userDetails.getAgeGroup()) ? null : userDetails.getAgeGroup().name()));
 		return userDetails;
 	}
 
-	protected MapSqlParameterSource mapParams(final String columnName, final String columnValue) {
+	protected MapSqlParameterSource mapParams(final String columnName1, final String columnValue1,
+			final String columnName2, final String columnValue2, final String columnName3, final String columnValue3) {
 		final Map<String, Object> param = new HashMap<>();
-		param.put(columnName, columnValue);
+		param.put(columnName1, columnValue1);
+		param.put(columnName2, columnValue2);
+		param.put(columnName3, columnValue3);
+		return new MapSqlParameterSource(param);
+	}
+
+	protected MapSqlParameterSource mapParams(final String columnName1, final String columnValue1) {
+		final Map<String, Object> param = new HashMap<>();
+		param.put(columnName1, columnValue1);
 		return new MapSqlParameterSource(param);
 	}
 
