@@ -10,9 +10,9 @@
 
         <rollingPolicy name="file" class="org.apache.log4j.rolling.FixedWindowRollingPolicy">
 
-            <param name="FileNamePattern" value="/Users/Rohit/workspace/core.log.%i.gz" />
+            <param name="FileNamePattern" value="/var/tmp/core.log.%i.gz" />
 
-            <param name="ActiveFileName" value="/Users/Rohit/workspace/core.log" />
+            <param name="ActiveFileName" value="/var/tmp/core.log" />
 
             <param name="MinIndex" value="1" />
 
@@ -23,7 +23,7 @@
         
         <layout class="org.apache.log4j.PatternLayout">
 
-            <param name="ConversionPattern" value="%d{ISO8601} [%t] %-5p %c{2}:%L (%X{userId}) - %m%n" />
+            <param name="ConversionPattern" value="t:%-6r [%.20t] %-5p %d{MMM-dd-yyyy HH:mm:ss,SSS/zzz} [%x]  %c{1} - %m%n" />
 
         </layout>
 
@@ -70,7 +70,7 @@
     
     <root>
 
-        <priority value="INFO" />
+        <priority value="info" />
 
         <appender-ref ref="file" />
 
