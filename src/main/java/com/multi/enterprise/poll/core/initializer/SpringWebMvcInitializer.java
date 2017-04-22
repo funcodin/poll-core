@@ -7,6 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import org.springframework.web.util.Log4jConfigListener;
 
 import com.multi.enterprise.commons.jdbc.config.JdbcConfig;
 import com.multi.enterprise.poll.core.config.root.MainConfig;
@@ -56,7 +57,9 @@ public class SpringWebMvcInitializer extends AbstractAnnotationConfigDispatcherS
 	@Override
 	public void onStartup(final ServletContext context) throws ServletException {
 		context.setInitParameter("webAppRootKey", "poll.core.root");
-		// TODO log configuration
+		context.setInitParameter("log4jConfigLocation", "classpath:/META-INF/properties/log4j_local.xml");
+		Log4jConfigListener log4jListener = new Log4jConfigListener();
+		context.addListener(log4jListener);
 		super.onStartup(context);
 	}
 
