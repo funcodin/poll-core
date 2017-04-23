@@ -239,4 +239,23 @@ Response
 
 
 
+4) Reset Password
+
+email is required in request
+http://localhost:8080/ws/user/resetPassword
+
+POST
+{
+	"userName":"rvd9900",
+	"email":"pollforfun@gmail.com"
+	
+}
+
+RESPONSE
+
+{
+  "userName": "rvd9900",
+  "email": "pollforfun@gmail.com",
+  "responseMessage": "Temporary password has been sent to pollforfun@gmail.com . Please update the password once you login"
+}
 
