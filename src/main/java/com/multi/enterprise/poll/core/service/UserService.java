@@ -131,6 +131,7 @@ public class UserService extends BaseRecordService<User> {
 				"Temporary password has been sent to %s . Please update the password once you login",
 				userReset.getEmail()));
 		this.update(user);
+		userReset.setUserName(user.getUserName());
 
 		return userReset;
 	}
@@ -138,6 +139,7 @@ public class UserService extends BaseRecordService<User> {
 	public UserReset forgotUsername(final UserReset userReset) throws ServiceException, ClientException {
 		final User user = this.userDao.getUserByEmail(userReset.getEmail());
 		this.emailService.sendForgotUsernameEmail(userReset.getEmail(), user.getUserName());
+		userReset.setUserName(user.getUserName());
 		userReset.setResponseString(String.format("Username recovery email has be sent to %s ", userReset.getEmail()));
 		return userReset;
 	}
@@ -149,6 +151,7 @@ public class UserService extends BaseRecordService<User> {
 		user.setPassword(tempPassword);
 		this.emailService.sendForgotUsernamePasswordEmail(userReset.getEmail(), user.getUserName(), tempPassword);
 
+		userReset.setUserName(user.getUserName());
 		userReset.setResponseString(String.format(
 				"Username and Temporary password has been sent to %s . Please update the password once you login",
 				userReset.getEmail()));
