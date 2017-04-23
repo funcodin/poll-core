@@ -9,12 +9,15 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import com.multi.enterprise.types.exception.ClientException;
 import com.multi.enterprise.types.poll.accounts.AgeGroup;
 import com.multi.enterprise.types.poll.accounts.Gender;
 import com.multi.enterprise.types.poll.accounts.User;
 import com.multi.enterprise.types.poll.accounts.UserDetails;
 import com.multi.enterprise.types.poll.accounts.UserPersonalDetails;
+import com.multi.enterprise.types.poll.accounts.UserReset;
 import com.multi.enterprise.types.users.UserDTO;
+import com.multi.enterprise.types.users.UserResetDTO;
 
 /**
  * @author Robot
@@ -62,6 +65,19 @@ public class UserConverter implements Converter<User, UserDTO> {
 		return user;
 	}
 
+	public UserReset internalizeValidate(final UserResetDTO userResetDto) throws ClientException {
+		final UserReset userReset = new UserReset();
+		if (StringUtils.isEmpty(userResetDto.getEmail())) {
+			throw new ClientException("Email is required. ");
+		}
+		userReset.setEmail(userResetDto.getEmail());
+
+		if (StringUtils.isNotEmpty(userResetDto.getUserName())) {
+			userReset.setUserName(userReset.getUserName());
+		}
+		return userReset;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -85,6 +101,14 @@ public class UserConverter implements Converter<User, UserDTO> {
 		userDto.setGender(Objects.nonNull(userDetails.getGender()) ? userDetails.getGender().name() : null);
 
 		return userDto;
+	}
+
+	public UserResetDTO externalize(final UserReset userReset) {
+		final UserResetDTO userResetDto = new UserResetDTO();
+		userResetDto.setEmail(userReset.getEmail());
+		userResetDto.setResponseMessage(userReset.getResponseString());
+		userResetDto.setUserName(userReset.getUserName());
+		return userResetDto;
 	}
 
 }

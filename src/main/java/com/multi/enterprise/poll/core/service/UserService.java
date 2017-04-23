@@ -26,6 +26,7 @@ import com.multi.enterprise.types.poll.accounts.SecureUser;
 import com.multi.enterprise.types.poll.accounts.User;
 import com.multi.enterprise.types.poll.accounts.UserDetails;
 import com.multi.enterprise.types.poll.accounts.UserPersonalDetails;
+import com.multi.enterprise.types.poll.accounts.UserReset;
 
 /**
  * @author Robot
@@ -45,6 +46,12 @@ public class UserService extends BaseRecordService<User> {
 	SecureUserDao secureUserDao;
 
 	@Autowired
+	EmailService emailService;
+
+	@Autowired
+	TemporaryPasswordGeneratorService tempPasswordGenerator;
+
+	@Autowired
 	UserDao userDao;
 
 	@Autowired
@@ -59,6 +66,7 @@ public class UserService extends BaseRecordService<User> {
 	@Autowired
 	OptionsDao optionsDao;
 
+	@Autowired
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -74,9 +82,6 @@ public class UserService extends BaseRecordService<User> {
 		final SecureUser secureUser = this.hashingService.createSecureUser(user);
 
 		final String passwordHash = this.hashingService.getSecuredString(user.getPassword(), secureUser.getSalt());
-		final String encryptedEmail = this.encryptionService.encrypt(user.getPersonalDetails().getEmailAddress(),
-				secureUser.getSalt());
-		user.getPersonalDetails().setEmailAddress(encryptedEmail);
 
 		if (StringUtils.isNotEmpty(user.getPersonalDetails().getContactNumber())) {
 			final String encryptedContact = this.encryptionService.encrypt(
@@ -97,11 +102,17 @@ public class UserService extends BaseRecordService<User> {
 		final User user = this.userDao.getByUserId(userId);
 		final SecureUser secureUser = this.secureUserDao.getByUserId(user.getUserId());
 
-		if (StringUtils.isNotEmpty(user.getPersonalDetails().getEmailAddress())) {
-			user.getPersonalDetails().setEmailAddress(
-					this.encryptionService.decrypt(user.getPersonalDetails().getEmailAddress(), secureUser.getSalt()));
-
+		if (StringUtils.isNotEmpty(user.getPersonalDetails().getContactNumber())) {
+			user.getPersonalDetails().setContactNumber(
+					this.encryptionService.decrypt(user.getPersonalDetails().getContactNumber(), secureUser.getSalt()));
 		}
+
+		return user;
+	}
+
+	public User getByUserName(final String userName) throws ServiceException, ClientException {
+		final User user = this.userDao.getByUserName(userName);
+		final SecureUser secureUser = this.secureUserDao.getByUserId(user.getUserId());
 
 		if (StringUtils.isNotEmpty(user.getPersonalDetails().getContactNumber())) {
 			user.getPersonalDetails().setContactNumber(
@@ -111,22 +122,38 @@ public class UserService extends BaseRecordService<User> {
 		return user;
 	}
 
-	public User getByUserName(final String userName) throws ServiceException {
-		final User user = this.userDao.getByUserName(userName);
-		final SecureUser secureUser = this.secureUserDao.getByUserId(user.getUserId());
+	public UserReset resetPasswordByEmail(final UserReset userReset) throws ServiceException, ClientException {
+		final User user = this.userDao.getUserByEmail(userReset.getEmail());
+		final String tempPassword = this.tempPasswordGenerator.generatePassword();
+		user.setPassword(tempPassword);
+		this.emailService.sendTempPasswordEmail(userReset.getEmail(), tempPassword);
+		userReset.setResponseString(String.format(
+				"Temporary password has been sent to %s . Please update the password once you login",
+				userReset.getEmail()));
+		this.update(user);
 
-		if (StringUtils.isNotEmpty(user.getPersonalDetails().getEmailAddress())) {
-			user.getPersonalDetails().setEmailAddress(
-					this.encryptionService.decrypt(user.getPersonalDetails().getEmailAddress(), secureUser.getSalt()));
+		return userReset;
+	}
 
-		}
+	public UserReset forgotUsername(final UserReset userReset) throws ServiceException, ClientException {
+		final User user = this.userDao.getUserByEmail(userReset.getEmail());
+		this.emailService.sendForgotUsernameEmail(userReset.getEmail(), user.getUserName());
+		userReset.setResponseString(String.format("Username recovery email has be sent to %s ", userReset.getEmail()));
+		return userReset;
+	}
 
-		if (StringUtils.isNotEmpty(user.getPersonalDetails().getContactNumber())) {
-			user.getPersonalDetails().setContactNumber(
-					this.encryptionService.decrypt(user.getPersonalDetails().getContactNumber(), secureUser.getSalt()));
-		}
+	public UserReset forgotUsernamePassword(final UserReset userReset) throws ServiceException, ClientException {
+		final User user = this.userDao.getUserByEmail(userReset.getEmail());
+		this.emailService.sendForgotUsernameEmail(userReset.getEmail(), user.getUserName());
+		final String tempPassword = this.tempPasswordGenerator.generatePassword();
+		user.setPassword(tempPassword);
+		this.emailService.sendForgotUsernamePasswordEmail(userReset.getEmail(), user.getUserName(), tempPassword);
 
-		return user;
+		userReset.setResponseString(String.format(
+				"Username and Temporary password has been sent to %s . Please update the password once you login",
+				userReset.getEmail()));
+
+		return userReset;
 	}
 
 	public User login(final User user) throws ServiceException, ClientException {
@@ -139,13 +166,6 @@ public class UserService extends BaseRecordService<User> {
 			throw new ClientException("Invalid credentials ");
 		}
 
-		if (StringUtils.isNotEmpty(foundUser.getPersonalDetails().getEmailAddress())) {
-			foundUser.getPersonalDetails().setEmailAddress(
-					this.encryptionService.decrypt(foundUser.getPersonalDetails().getEmailAddress(),
-							secureUser.getSalt()));
-
-		}
-
 		if (StringUtils.isNotEmpty(foundUser.getPersonalDetails().getContactNumber())) {
 			foundUser.getPersonalDetails().setContactNumber(
 					this.encryptionService.decrypt(foundUser.getPersonalDetails().getContactNumber(),
@@ -156,12 +176,10 @@ public class UserService extends BaseRecordService<User> {
 	}
 
 	public QuestionList validate(final User user) throws ServiceException, ClientException {
-		// find user by username
 		final User foundUser = this.userDao.getByUserName(user.getUserName());
-		// find secure user
-
 		final SecureUser secureUser = this.secureUserDao.getByUserId(foundUser.getUserId());
 		final String passwordHash = this.hashingService.getSecuredString(user.getPassword(), secureUser.getSalt());
+
 		foundUser.setPassword(passwordHash);
 
 		if (!StringUtils.equals(foundUser.getPassword(), passwordHash)) {
@@ -245,8 +263,7 @@ public class UserService extends BaseRecordService<User> {
 		}
 
 		if (StringUtils.isNotEmpty(userPersonalDetails.getEmailAddress())) {
-			foundUserPersonalDetails.setEmailAddress(this.encryptionService.encrypt(
-					userPersonalDetails.getEmailAddress(), secureUser.getSalt()));
+			foundUserPersonalDetails.setEmailAddress(userPersonalDetails.getEmailAddress());
 		}
 		return foundUserPersonalDetails;
 
