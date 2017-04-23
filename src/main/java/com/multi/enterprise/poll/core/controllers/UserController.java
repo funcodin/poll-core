@@ -19,8 +19,10 @@ import com.multi.enterprise.types.exception.ClientException;
 import com.multi.enterprise.types.exception.ServiceException;
 import com.multi.enterprise.types.poll.QuestionListDTO;
 import com.multi.enterprise.types.poll.accounts.User;
+import com.multi.enterprise.types.poll.accounts.UserReset;
 import com.multi.enterprise.types.poll.consts.PollCoreRestEndpoints;
 import com.multi.enterprise.types.users.UserDTO;
+import com.multi.enterprise.types.users.UserResetDTO;
 
 /**
  * @author Robot
@@ -64,6 +66,30 @@ public class UserController implements CrudController<UserDTO> {
 		return this.converter.externalize(this.userService.login(user));
 	}
 
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+	public UserResetDTO resetPassword(@RequestBody final UserResetDTO userResetDto) throws ServiceException,
+			ClientException {
+		final UserReset userReset = this.converter.internalizeValidate(userResetDto);
+		final UserReset updatedUserReset = this.userService.resetPasswordByEmail(userReset);
+		return this.converter.externalize(updatedUserReset);
+	}
+
+	@RequestMapping(value = "/forgotUsername", method = RequestMethod.POST)
+	public UserResetDTO forgotUsername(@RequestBody final UserResetDTO userResetDto) throws ServiceException,
+			ClientException {
+		final UserReset userReset = this.converter.internalizeValidate(userResetDto);
+		final UserReset updatedUserReset = this.userService.forgotUsername(userReset);
+		return this.converter.externalize(updatedUserReset);
+	}
+
+	@RequestMapping(value = "/forgotUsernamePassword", method = RequestMethod.POST)
+	public UserResetDTO forgotUsernamePassword(@RequestBody final UserResetDTO userResetDto) throws ServiceException,
+			ClientException {
+		final UserReset userReset = this.converter.internalizeValidate(userResetDto);
+		final UserReset updatedUserReset = this.userService.forgotUsernamePassword(userReset);
+		return this.converter.externalize(updatedUserReset);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -77,7 +103,7 @@ public class UserController implements CrudController<UserDTO> {
 	}
 
 	@RequestMapping(value = "/userName/{userName}", method = RequestMethod.GET)
-	public UserDTO getByUserName(@PathVariable final String userName) throws ServiceException {
+	public UserDTO getByUserName(@PathVariable final String userName) throws ServiceException, ClientException {
 		final User user = this.userService.getByUserName(userName);
 		return this.converter.externalize(user);
 	}
