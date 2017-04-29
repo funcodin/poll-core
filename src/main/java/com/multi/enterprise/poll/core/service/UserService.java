@@ -18,6 +18,7 @@ import com.multi.enterprise.poll.core.dao.SecureUserDao;
 import com.multi.enterprise.poll.core.dao.UserDao;
 import com.multi.enterprise.poll.core.dao.UserDetailDao;
 import com.multi.enterprise.types.exception.ClientException;
+import com.multi.enterprise.types.exception.IllegalArgumentServiceException;
 import com.multi.enterprise.types.exception.ServiceException;
 import com.multi.enterprise.types.poll.Options;
 import com.multi.enterprise.types.poll.Question;
@@ -159,14 +160,14 @@ public class UserService extends BaseRecordService<User> {
 		return userReset;
 	}
 
-	public User login(final User user) throws ServiceException, ClientException {
+	public User login(final User user) throws ServiceException {
 
 		final User foundUser = this.userDao.getByUserName(user.getUserName());
 		final SecureUser secureUser = this.secureUserDao.getByUserId(foundUser.getUserId());
 		final String passwordHash = this.hashingService.getSecuredString(user.getPassword(), secureUser.getSalt());
 
 		if (!StringUtils.equals(foundUser.getPassword(), passwordHash)) {
-			throw new ClientException("Invalid credentials ");
+			throw new IllegalArgumentServiceException("Invalid credentials ");
 		}
 
 		if (StringUtils.isNotEmpty(foundUser.getPersonalDetails().getContactNumber())) {
@@ -178,7 +179,7 @@ public class UserService extends BaseRecordService<User> {
 		return foundUser;
 	}
 
-	public QuestionList validate(final User user) throws ServiceException, ClientException {
+	public QuestionList validate(final User user) throws ServiceException, IllegalArgumentServiceException {
 		final User foundUser = this.userDao.getByUserName(user.getUserName());
 		final SecureUser secureUser = this.secureUserDao.getByUserId(foundUser.getUserId());
 		final String passwordHash = this.hashingService.getSecuredString(user.getPassword(), secureUser.getSalt());
@@ -186,7 +187,7 @@ public class UserService extends BaseRecordService<User> {
 		foundUser.setPassword(passwordHash);
 
 		if (!StringUtils.equals(foundUser.getPassword(), passwordHash)) {
-			throw new ClientException("Invalid credentials ");
+			throw new IllegalArgumentServiceException("Invalid credentials ");
 		}
 
 		final QuestionList questionList = this.questionDao.getLatestPaginatedQuestion(5);

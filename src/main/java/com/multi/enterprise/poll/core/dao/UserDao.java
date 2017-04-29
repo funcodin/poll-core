@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
 import com.multi.enterprise.commons.jdbc.dao.BaseJdbcRecordAccess;
-import com.multi.enterprise.types.exception.ClientException;
+import com.multi.enterprise.types.exception.IllegalArgumentServiceException;
 import com.multi.enterprise.types.exception.ServiceException;
 import com.multi.enterprise.types.poll.accounts.User;
 
@@ -50,11 +50,11 @@ public class UserDao extends BaseJdbcRecordAccess<User> {
 		return User.class;
 	}
 
-	public User getByUserName(final String userName) throws ClientException {
+	public User getByUserName(final String userName) throws IllegalArgumentServiceException {
 		final List<User> users = this.jdbcTempalte.query(SELECT_BY_USER_NAME, this.mapParams("user_name", userName),
 				this.rowMapper);
 		if (CollectionUtils.isEmpty(users))
-			throw new ClientException(String.format("User with username  %s not found ", userName));
+			throw new IllegalArgumentServiceException(String.format("User with username  %s not found ", userName));
 		else
 			return users.get(0);
 

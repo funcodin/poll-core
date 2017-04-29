@@ -5,6 +5,7 @@ package com.multi.enterprise.poll.core.config.servlet;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import com.multi.enterprise.commons.servlet.BaseWebMvcConfig;
 
@@ -17,4 +18,8 @@ import com.multi.enterprise.commons.servlet.BaseWebMvcConfig;
 		"com.multi.enterprise.poll.core.controllers" })
 public class WebMvcConfig extends BaseWebMvcConfig {
 
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**");
+	}
 }

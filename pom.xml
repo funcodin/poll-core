@@ -9,7 +9,7 @@
    <description>Poll Core - Core</description>
    <properties>
       <project.timestamp>${maven.build.timestamp}</project.timestamp>
-      <org.springframework.version>4.1.4.RELEASE</org.springframework.version>
+      <org.springframework.version>4.3.8.RELEASE</org.springframework.version>
       <github.global.server>github</github.global.server>
    </properties>
    <distributionManagement>
