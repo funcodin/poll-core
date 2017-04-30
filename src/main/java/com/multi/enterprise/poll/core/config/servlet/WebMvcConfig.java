@@ -15,7 +15,7 @@ import com.multi.enterprise.commons.servlet.BaseWebMvcConfig;
  */
 @Configuration
 @ComponentScan(basePackages = { "com.multi.enterprise.commons.controllers",
-		"com.multi.enterprise.poll.core.controllers" })
+		"com.multi.enterprise.poll.core.controllers", "com.multi.enterprise.poll.core.controllers.error" })
 public class WebMvcConfig extends BaseWebMvcConfig {
 
 	@Override
