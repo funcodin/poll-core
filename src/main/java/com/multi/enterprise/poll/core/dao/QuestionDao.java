@@ -3,9 +3,11 @@
  */
 package com.multi.enterprise.poll.core.dao;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Repository;
 
 import com.multi.enterprise.commons.jdbc.dao.BaseJdbcRecordAccess;
@@ -111,10 +113,17 @@ public class QuestionDao extends BaseJdbcRecordAccess<Question> {
 	}
 
 	private QuestionList convertToQuestionList(final List<Question> questions, final int limit) {
+		final QuestionList questionList = new QuestionList();
+		if (CollectionUtils.isEmpty(questions)) {
+			questionList.setLastPage(true);
+			questionList.setQuestions(new ArrayList<>());
+			questionList.setLimit(limit);
+			return questionList;
+		}
+
 		final Comparator<Question> comparator = (q1, q2) -> Integer.compare(q1.getQuestionIndex(),
 				q2.getQuestionIndex());
 		final Question question = questions.stream().min(comparator).get();
-		final QuestionList questionList = new QuestionList();
 
 		questionList.setLastQuestionIndex(question.getQuestionIndex());
 		questionList.setLimit(limit);
