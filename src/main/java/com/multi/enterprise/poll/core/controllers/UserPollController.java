@@ -48,7 +48,9 @@ public class UserPollController implements CrudController<UserPollDTO> {
 	public QuestionDTO createPoll(@RequestBody final UserPollDTO userPollDto) throws ServiceException {
 		final UserPoll userPoll = this.converter.internalize(userPollDto);
 		final Question question = this.userPollService.createPoll(userPoll);
-		return this.questionConverter.externalize(question);
+		final QuestionDTO questionDto = this.questionConverter.externalize(question);
+		questionDto.setAnswered(true);
+		return questionDto;
 	}
 
 	/*
