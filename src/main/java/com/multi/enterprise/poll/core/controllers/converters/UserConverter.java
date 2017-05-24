@@ -16,6 +16,7 @@ import com.multi.enterprise.types.poll.accounts.User;
 import com.multi.enterprise.types.poll.accounts.UserDetails;
 import com.multi.enterprise.types.poll.accounts.UserPersonalDetails;
 import com.multi.enterprise.types.poll.accounts.UserReset;
+import com.multi.enterprise.types.poll.accounts.UserStatistics;
 import com.multi.enterprise.types.users.UserDTO;
 import com.multi.enterprise.types.users.UserResetDTO;
 
@@ -55,6 +56,7 @@ public class UserConverter implements Converter<User, UserDTO> {
 
 		user.setUserDetails(userDetails);
 		user.setPersonalDetails(personalDetails);
+
 		return user;
 	}
 
@@ -99,6 +101,12 @@ public class UserConverter implements Converter<User, UserDTO> {
 		final UserDetails userDetails = user.getUserDetails();
 		userDto.setAgeGroup(Objects.nonNull(userDetails.getAgeGroup()) ? userDetails.getAgeGroup().name() : null);
 		userDto.setGender(Objects.nonNull(userDetails.getGender()) ? userDetails.getGender().name() : null);
+
+		final UserStatistics userStats = user.getUserStatistics();
+		userDto.setQuestionsAnswered(Objects.nonNull(userStats.getQuestionsAnswered()) ? userStats
+				.getQuestionsAnswered() : 0);
+		userDto.setQuestionsAsked(Objects.nonNull(userStats.getQuestionsAsked()) ? userStats.getQuestionsAsked() : 0);
+		userDto.setCommentsMade(Objects.nonNull(userStats.getCommentCount()) ? userStats.getCommentCount() : 0);
 
 		return userDto;
 	}

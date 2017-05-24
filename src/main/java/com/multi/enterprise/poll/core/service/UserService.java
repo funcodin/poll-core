@@ -17,6 +17,7 @@ import com.multi.enterprise.poll.core.dao.QuestionDao;
 import com.multi.enterprise.poll.core.dao.SecureUserDao;
 import com.multi.enterprise.poll.core.dao.UserDao;
 import com.multi.enterprise.poll.core.dao.UserDetailDao;
+import com.multi.enterprise.poll.core.dao.UserStatisticsDao;
 import com.multi.enterprise.types.exception.ClientException;
 import com.multi.enterprise.types.exception.IllegalArgumentServiceException;
 import com.multi.enterprise.types.exception.ServiceException;
@@ -28,6 +29,7 @@ import com.multi.enterprise.types.poll.accounts.User;
 import com.multi.enterprise.types.poll.accounts.UserDetails;
 import com.multi.enterprise.types.poll.accounts.UserPersonalDetails;
 import com.multi.enterprise.types.poll.accounts.UserReset;
+import com.multi.enterprise.types.poll.accounts.UserStatistics;
 
 /**
  * @author Robot
@@ -68,6 +70,8 @@ public class UserService extends BaseRecordService<User> {
 	OptionsDao optionsDao;
 
 	@Autowired
+	UserStatisticsDao userStatDao;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -95,6 +99,7 @@ public class UserService extends BaseRecordService<User> {
 		this.secureUserDao.create(secureUser);
 		this.userDetailDao.create(user.getUserDetails());
 		this.personalDetailDao.create(user.getPersonalDetails());
+		this.userStatDao.createInitialUserStats(user.getUserId());
 
 		return user;
 	}
@@ -108,6 +113,9 @@ public class UserService extends BaseRecordService<User> {
 					this.encryptionService.decrypt(user.getPersonalDetails().getContactNumber(), secureUser.getSalt()));
 		}
 
+		final UserStatistics userStats = this.userStatDao.getById(userId);
+		user.setUserStatistics(userStats);
+
 		return user;
 	}
 
@@ -119,6 +127,9 @@ public class UserService extends BaseRecordService<User> {
 			user.getPersonalDetails().setContactNumber(
 					this.encryptionService.decrypt(user.getPersonalDetails().getContactNumber(), secureUser.getSalt()));
 		}
+
+		final UserStatistics userStats = this.userStatDao.getById(user.getUserId());
+		user.setUserStatistics(userStats);
 
 		return user;
 	}
@@ -175,6 +186,8 @@ public class UserService extends BaseRecordService<User> {
 					this.encryptionService.decrypt(foundUser.getPersonalDetails().getContactNumber(),
 							secureUser.getSalt()));
 		}
+		final UserStatistics userStats = this.userStatDao.getById(user.getUserId());
+		user.setUserStatistics(userStats);
 
 		return foundUser;
 	}
@@ -272,4 +285,5 @@ public class UserService extends BaseRecordService<User> {
 		return foundUserPersonalDetails;
 
 	}
+
 }
