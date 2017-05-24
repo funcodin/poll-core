@@ -27,6 +27,9 @@ public class UserPollDao extends BaseJdbcRecordAccess<UserPoll> {
 	@Autowired
 	OptionsDao optionsDao;
 
+	@Autowired
+	UserStatisticsDao userStatDao;
+
 	protected static final String GET_USER_POLL = "select user_id, option_id, question_id, created_date, modified_date from user_poll where user_id = :user_id and question_id = :question_id";
 
 	protected static final String DELETE_USER_POLL = "delete from user_poll where user_id = :user_id and question_id = :question_id";
@@ -43,14 +46,19 @@ public class UserPollDao extends BaseJdbcRecordAccess<UserPoll> {
 	}
 
 	public UserPoll createPoll(final UserPoll userPoll) throws ServiceException {
+		boolean incrementStat = true;
 		final UserPoll existingPoll = this.getUserPoll(userPoll);
 
 		// Fail safe approach
 		if (Objects.nonNull(existingPoll)) {
 			this.deleteUserPoll(existingPoll);
 			this.optionsDao.decrementVoteCount(existingPoll.getOptionId());
+			incrementStat = false;
 		}
 		this.optionsDao.incrementVoteCount(userPoll.getOptionId());
+		if (incrementStat) {
+			this.userStatDao.incrementVotedCount(userPoll.getUserId());
+		}
 		return super.create(userPoll);
 
 	}
