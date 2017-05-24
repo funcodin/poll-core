@@ -22,6 +22,7 @@ public class UserStatisticsMapper extends BaseRowMapper<UserStatistics> {
 	@Override
 	public UserStatistics mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
 		final UserStatistics userStats = new UserStatistics();
+		userStats.setId(resultSet.getString("id"));
 		userStats.setUserId(resultSet.getString("user_id"));
 		userStats.setQuestionsAnswered(resultSet.getInt("questions_answered"));
 		userStats.setQuestionsAsked(resultSet.getInt("questions_asked"));

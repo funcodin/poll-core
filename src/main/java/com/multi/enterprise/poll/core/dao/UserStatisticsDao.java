@@ -3,8 +3,14 @@
  */
 package com.multi.enterprise.poll.core.dao;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.multi.enterprise.commons.jdbc.dao.BaseJdbcRecordAccess;
@@ -30,6 +36,12 @@ public class UserStatisticsDao extends BaseJdbcRecordAccess<UserStatistics> {
 	@Override
 	public Class<UserStatistics> getDocumentClass() {
 		return UserStatistics.class;
+	}
+
+	public UserStatistics getUserStats(final String userId) {
+		final List<UserStatistics> userStats = this.jdbcTempalte.query(GET_USER_STATS,
+				this.mapParams("user_id", userId), this.rowMapper);
+		return CollectionUtils.isEmpty(userStats) ? null : userStats.get(0);
 	}
 
 	public UserStatistics incrementVotedCount(final String userId) {
@@ -59,12 +71,19 @@ public class UserStatisticsDao extends BaseJdbcRecordAccess<UserStatistics> {
 
 	public UserStatistics createInitialUserStats(final String userId) {
 		final UserStatistics userStats = new UserStatistics();
+		userStats.setId(UUID.randomUUID().toString());
 		userStats.setUserId(userId);
 		userStats.setQuestionsAnswered(0);
 		userStats.setQuestionsAsked(0);
 		userStats.setCommentCount(0);
 
 		return this.create(userStats);
+	}
+
+	protected MapSqlParameterSource mapParams(final String columnName1, final String columnValue1) {
+		final Map<String, Object> param = new HashMap<>();
+		param.put(columnName1, columnValue1);
+		return new MapSqlParameterSource(param);
 	}
 
 }

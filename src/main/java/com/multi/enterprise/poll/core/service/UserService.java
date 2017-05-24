@@ -99,7 +99,7 @@ public class UserService extends BaseRecordService<User> {
 		this.secureUserDao.create(secureUser);
 		this.userDetailDao.create(user.getUserDetails());
 		this.personalDetailDao.create(user.getPersonalDetails());
-		this.userStatDao.createInitialUserStats(user.getUserId());
+		user.setUserStatistics(this.userStatDao.createInitialUserStats(user.getUserId()));
 
 		return user;
 	}
@@ -113,7 +113,7 @@ public class UserService extends BaseRecordService<User> {
 					this.encryptionService.decrypt(user.getPersonalDetails().getContactNumber(), secureUser.getSalt()));
 		}
 
-		final UserStatistics userStats = this.userStatDao.getById(userId);
+		final UserStatistics userStats = this.userStatDao.getUserStats(userId);
 		user.setUserStatistics(userStats);
 
 		return user;
@@ -128,7 +128,7 @@ public class UserService extends BaseRecordService<User> {
 					this.encryptionService.decrypt(user.getPersonalDetails().getContactNumber(), secureUser.getSalt()));
 		}
 
-		final UserStatistics userStats = this.userStatDao.getById(user.getUserId());
+		final UserStatistics userStats = this.userStatDao.getUserStats(user.getUserId());
 		user.setUserStatistics(userStats);
 
 		return user;
@@ -186,8 +186,9 @@ public class UserService extends BaseRecordService<User> {
 					this.encryptionService.decrypt(foundUser.getPersonalDetails().getContactNumber(),
 							secureUser.getSalt()));
 		}
-		final UserStatistics userStats = this.userStatDao.getById(user.getUserId());
-		user.setUserStatistics(userStats);
+
+		final UserStatistics userStats = this.userStatDao.getUserStats(foundUser.getUserId());
+		foundUser.setUserStatistics(userStats);
 
 		return foundUser;
 	}
