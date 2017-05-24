@@ -40,6 +40,7 @@ public class UserStatisticsSqlParameterMapper extends BaseSqlParameterMapper<Use
 
 	public OrderedMapSqlParameterSource mapInsertSqlParams(final UserStatistics userStats) {
 		final OrderedMapSqlParameterSource orderedMapSqlParameterSource = new OrderedMapSqlParameterSource();
+		orderedMapSqlParameterSource.addValue("id", userStats.getId());
 		orderedMapSqlParameterSource.addValue("user_id", userStats.getUserId());
 		orderedMapSqlParameterSource.addValue("questions_answered", userStats.getQuestionsAnswered());
 		orderedMapSqlParameterSource.addValue("questions_asked", userStats.getQuestionsAsked());
@@ -50,5 +51,4 @@ public class UserStatisticsSqlParameterMapper extends BaseSqlParameterMapper<Use
 		return orderedMapSqlParameterSource;
 
 	}
-
 }
