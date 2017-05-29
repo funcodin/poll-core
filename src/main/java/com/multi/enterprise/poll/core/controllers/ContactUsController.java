@@ -4,6 +4,7 @@
 package com.multi.enterprise.poll.core.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +36,7 @@ public class ContactUsController implements CrudController<ContactUsDTO> {
 	 * @see com.multi.enterprise.commons.controllers.CrudController#create(java.lang.Object)
 	 */
 	@Override
-	public ContactUsDTO create(ContactUsDTO create) throws ServiceException {
+	public ContactUsDTO create(@RequestBody ContactUsDTO create) throws ServiceException {
 		final ContactUs contactUs = this.contactUsConverter.internalize(create);
 		this.contactUsService.sendContactUs(contactUs);
 		return create;

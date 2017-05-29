@@ -105,8 +105,8 @@ public class EmailService {
 			final Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(from));
-			message.setSubject(String.format("You received a comment from user ", contactUs.getName()));
-			message.setText(String.format("Hello, User  %s with email %s and says %s ", contactUs.getName(),
+			message.setSubject(String.format("You received a comment from %s ", contactUs.getName()));
+			message.setText(String.format("Hello, User  %s with email %s says %s ", contactUs.getName(),
 					contactUs.getEmail(), contactUs.getComment()));
 			Transport.send(message);
 
