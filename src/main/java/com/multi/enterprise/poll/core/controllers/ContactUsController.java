@@ -37,7 +37,7 @@ public class ContactUsController implements CrudController<ContactUsDTO> {
 	@Override
 	public ContactUsDTO create(ContactUsDTO create) throws ServiceException {
 		final ContactUs contactUs = this.contactUsConverter.internalize(create);
-		this.contactUsService.create(contactUs);
+		this.contactUsService.sendContactUs(contactUs);
 		return create;
 	}
 
