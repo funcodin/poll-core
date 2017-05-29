@@ -54,6 +54,17 @@ public class UserController implements CrudController<UserDTO> {
 		return this.converter.externalize(createUser);
 	}
 
+	// This is coz I couldnt figure out angular 2 issue
+	@RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+	public UserDTO updateUser(@RequestBody final UserDTO update) throws ServiceException {
+		if (StringUtils.isEmpty(update.getUserId())) {
+			throw new ServiceException(" User Id is required ");
+		}
+		final User user = this.converter.internalize(update);
+		final User updatedUser = this.userService.update(user);
+		return this.converter.externalize(updatedUser);
+	}
+
 	@RequestMapping(value = "/validate", method = RequestMethod.POST)
 	public QuestionListDTO validateUser(@RequestBody final UserDTO userDto) throws ServiceException, ClientException {
 		final User user = this.converter.internalizeValidate(userDto);

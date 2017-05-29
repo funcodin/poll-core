@@ -43,7 +43,8 @@ public class UserConverter implements Converter<User, UserDTO> {
 		userDetails.setId(UUID.randomUUID().toString());
 		userDetails.setAgeGroup(StringUtils.isEmpty(userDto.getAgeGroup()) ? null : AgeGroup.valueOf(userDto
 				.getAgeGroup()));
-		userDetails.setGender(StringUtils.isEmpty(userDto.getGender()) ? null : Gender.valueOf(userDto.getGender()));
+		userDetails.setGender(StringUtils.isEmpty(userDto.getGender()) ? null : Gender.valueOf(userDto.getGender()
+				.toUpperCase()));
 		userDetails.setUserId(user.getUserId());
 
 		final UserPersonalDetails personalDetails = new UserPersonalDetails();
