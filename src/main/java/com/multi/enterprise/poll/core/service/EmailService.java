@@ -16,6 +16,7 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.stereotype.Service;
 
 import com.multi.enterprise.types.exception.ServiceException;
+import com.multi.enterprise.types.poll.ContactUs;
 
 /**
  * @author Robot
@@ -94,6 +95,24 @@ public class EmailService {
 
 		} catch (MessagingException e) {
 			throw new ServiceException(String.format("Error occured while sending out an email to %s", toEmailAddress));
+		}
+
+	}
+
+	public void sendContactUsEmail(final ContactUs contactUs) throws ServiceException {
+
+		try {
+			final Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(from));
+			message.setSubject(String.format("You received a comment from user ", contactUs.getName()));
+			message.setText(String.format("Hello, User  %s with email %s and says %s ", contactUs.getName(),
+					contactUs.getEmail(), contactUs.getComment()));
+			Transport.send(message);
+
+		} catch (MessagingException e) {
+			throw new ServiceException(String.format("Error occured while sending out an comment from  %s",
+					contactUs.getEmail()));
 		}
 
 	}
