@@ -3,6 +3,8 @@
  */
 package com.multi.enterprise.poll.core.controllers.converters;
 
+import org.springframework.stereotype.Component;
+
 import com.multi.enterprise.types.exception.ServiceException;
 import com.multi.enterprise.types.poll.ContactUs;
 import com.multi.enterprise.types.poll.ContactUsDTO;
@@ -11,6 +13,7 @@ import com.multi.enterprise.types.poll.ContactUsDTO;
  * @author Robot
  *
  */
+@Component
 public class ContactUsConverter implements Converter<ContactUs, ContactUsDTO> {
 
 	/*
