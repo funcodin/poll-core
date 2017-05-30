@@ -6,7 +6,6 @@ package com.multi.enterprise.poll.core.dao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -44,20 +43,20 @@ public class UserStatisticsDao extends BaseJdbcRecordAccess<UserStatistics> {
 		return CollectionUtils.isEmpty(userStats) ? null : userStats.get(0);
 	}
 
-	public UserStatistics incrementVotedCount(final String userId) {
+	public UserStatistics incrementAnsweredCount(final String userId) {
 		final UserStatistics userStats = this.getById(userId);
-		if (Objects.isNull(userStats)) {
+		this.jdbcTempalte.update(INCREMENT_QUESTIONS_ANSWERED,
+				this.mapIdandAnsweredParameter(userId, userStats.getQuestionsAnswered() + 1));
 
-		}
-		userStats.setQuestionsAnswered(userStats.getQuestionsAnswered() + 1);
-		final UserStatistics updatedStats = this.update(userStats);
+		final UserStatistics updatedStats = this.getById(userId);
 		return updatedStats;
 	}
 
 	public UserStatistics incrementAskedCount(final String userId) {
 		final UserStatistics userStats = this.getById(userId);
-		userStats.setQuestionsAsked(userStats.getQuestionsAsked() + 1);
-		final UserStatistics updateStats = this.update(userStats);
+		this.jdbcTempalte.update(INCREMENT_QUESTIONS_ASKED,
+				this.mapIdandAskedParameter(userId, userStats.getQuestionsAsked() + 1));
+		final UserStatistics updateStats = this.getById(userId);
 		return updateStats;
 
 	}
@@ -83,6 +82,22 @@ public class UserStatisticsDao extends BaseJdbcRecordAccess<UserStatistics> {
 	protected MapSqlParameterSource mapParams(final String columnName1, final String columnValue1) {
 		final Map<String, Object> param = new HashMap<>();
 		param.put(columnName1, columnValue1);
+		return new MapSqlParameterSource(param);
+	}
+
+	protected MapSqlParameterSource mapIdandAskedParameter(final String id, final int questionsAsked) {
+		final Map<String, Object> param = new HashMap<>();
+		param.put("user_id", id);
+		param.put("questions_asked", questionsAsked);
+
+		return new MapSqlParameterSource(param);
+	}
+
+	protected MapSqlParameterSource mapIdandAnsweredParameter(final String id, final int questionsAnswered) {
+		final Map<String, Object> param = new HashMap<>();
+		param.put("user_id", id);
+		param.put("questions_answered", questionsAnswered);
+
 		return new MapSqlParameterSource(param);
 	}
 

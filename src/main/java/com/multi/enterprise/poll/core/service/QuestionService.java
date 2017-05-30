@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.multi.enterprise.commons.service.BaseRecordService;
 import com.multi.enterprise.poll.core.dao.OptionsDao;
 import com.multi.enterprise.poll.core.dao.QuestionDao;
+import com.multi.enterprise.poll.core.dao.UserStatisticsDao;
 import com.multi.enterprise.poll.core.validation.QuestionValidation;
 import com.multi.enterprise.types.exception.EntityNotFoundException;
 import com.multi.enterprise.types.exception.ServiceException;
@@ -31,6 +32,9 @@ public class QuestionService extends BaseRecordService<Question> {
 
 	@Autowired
 	OptionsDao optionsDao;
+
+	@Autowired
+	UserStatisticsDao userStatDao;
 
 	/*
 	 * (non-Javadoc)
@@ -60,6 +64,7 @@ public class QuestionService extends BaseRecordService<Question> {
 			options.setVoteCount(0);
 			optionsDao.create(options);
 		}
+		this.userStatDao.incrementAskedCount(question.getUserId());
 		return question;
 	}
 

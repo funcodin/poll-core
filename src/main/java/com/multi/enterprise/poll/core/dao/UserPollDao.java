@@ -57,7 +57,7 @@ public class UserPollDao extends BaseJdbcRecordAccess<UserPoll> {
 		}
 		this.optionsDao.incrementVoteCount(userPoll.getOptionId());
 		if (incrementStat) {
-			this.userStatDao.incrementVotedCount(userPoll.getUserId());
+			this.userStatDao.incrementAnsweredCount(userPoll.getUserId());
 		}
 		return super.create(userPoll);
 
