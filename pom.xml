@@ -102,6 +102,14 @@
                <target>1.8</target>
             </configuration>
          </plugin>
+         <plugin>
+      <groupId>com.spotify</groupId>
+      <artifactId>docker-maven-plugin</artifactId>
+      <version>0.4.13</version>
+      <configuration>
+        <skipDocker>true</skipDocker>
+      </configuration>
+    </plugin>
       </plugins>
       <resources>
          <resource>
